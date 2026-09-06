@@ -12,6 +12,8 @@ import Spell from './routes/modes/Spell'
 import Test from './routes/modes/Test'
 import Match from './routes/modes/Match'
 import Gravity from './routes/modes/Gravity'
+import Stats from './routes/Stats'
+import SettingsPage from './routes/Settings'
 import NotFound from './routes/NotFound'
 import { applyTheme, useSettings } from './store/useSettings'
 
@@ -37,6 +39,8 @@ export default function App() {
       <Route element={<AppShell />}>
         <Route index element={<Home />} />
         <Route path="library" element={<Library />} />
+        <Route path="stats" element={<Stats />} />
+        <Route path="settings" element={<SettingsPage />} />
         <Route path="create" element={<EditSet />} />
         <Route path="set/:id" element={<SetDetail />} />
         <Route path="set/:id/edit" element={<EditSet />} />

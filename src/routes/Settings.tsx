@@ -1,0 +1,209 @@
+import { useRef, useState } from 'react'
+import { Page } from '../components/layout/AppShell'
+import { Button } from '../components/ui/Button'
+import { Modal } from '../components/ui/Modal'
+import { Segmented, Toggle } from '../components/ui/Toggle'
+import { useSettings } from '../store/useSettings'
+import { exportLibrary, importBackup, wipeLibrary } from '../lib/backup'
+import { download } from '../lib/exportSet'
+import { pluralize } from '../lib/format'
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="mt-8">
+      <h2 className="mb-3 text-[11px] font-bold uppercase tracking-widest text-[var(--oq-text-faint)]">
+        {title}
+      </h2>
+      <div className="rounded-xl border border-[var(--oq-line)] bg-[var(--oq-surface)] px-5">
+        {children}
+      </div>
+    </section>
+  )
+}
+
+export default function SettingsPage() {
+  const { settings, update } = useSettings()
+  const fileRef = useRef<HTMLInputElement>(null)
+  const [message, setMessage] = useState<{ tone: 'ok' | 'bad'; text: string } | null>(null)
+  const [confirmWipe, setConfirmWipe] = useState(false)
+
+  const onFile = async (file: File | undefined) => {
+    if (!file) return
+    const result = await importBackup(await file.text())
+    setMessage(
+      result.ok
+        ? { tone: 'ok', text: `Imported ${pluralize(result.sets, 'set')}.` }
+        : { tone: 'bad', text: result.error },
+    )
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
+  return (
+    <Page width="max-w-2xl">
+      <h1 className="text-3xl font-extrabold">Settings</h1>
+      <p className="mt-1.5 text-sm text-[var(--oq-text-soft)]">
+        Everything here is stored on this device only.
+      </p>
+
+      <Section title="Appearance">
+        <div className="flex items-center justify-between gap-6 py-4">
+          <span className="text-sm font-semibold">Theme</span>
+          <Segmented
+            value={settings.theme}
+            onChange={(theme) => void update({ theme })}
+            options={[
+              { value: 'light', label: 'Light' },
+              { value: 'dark', label: 'Dark' },
+              { value: 'system', label: 'System' },
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section title="Studying">
+        <div className="divide-y divide-[var(--oq-line)]">
+          <div className="flex items-center justify-between gap-6 py-4">
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold">Front of card</span>
+              <span className="block text-xs text-[var(--oq-text-faint)]">
+                Which side modes show as the prompt
+              </span>
+            </span>
+            <Segmented
+              value={settings.promptSide}
+              onChange={(promptSide) => void update({ promptSide })}
+              options={[
+                { value: 'term', label: 'Term' },
+                { value: 'definition', label: 'Definition' },
+              ]}
+            />
+          </div>
+          <Toggle
+            label="Forgive typos"
+            hint="A near miss warns instead of counting as wrong"
+            checked={settings.typoTolerance}
+            onChange={(typoTolerance) => void update({ typoTolerance })}
+          />
+          <Toggle
+            label="Retype after a miss"
+            hint="In Write, copy the correct answer once before moving on"
+            checked={settings.retypeOnMiss}
+            onChange={(retypeOnMiss) => void update({ retypeOnMiss })}
+          />
+          <Toggle
+            label="Read prompts aloud"
+            hint="Uses your browser's built-in speech synthesis"
+            checked={settings.ttsEnabled}
+            onChange={(ttsEnabled) => void update({ ttsEnabled })}
+          />
+          <Toggle
+            label="Shuffle by default"
+            checked={settings.shuffleDefault}
+            onChange={(shuffleDefault) => void update({ shuffleDefault })}
+          />
+        </div>
+      </Section>
+
+      <Section title="Your data">
+        <div className="divide-y divide-[var(--oq-line)]">
+          <div className="flex flex-wrap items-center justify-between gap-4 py-4">
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold">Back up everything</span>
+              <span className="block text-xs text-[var(--oq-text-faint)]">
+                Sets, folders and progress as one JSON file
+              </span>
+            </span>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={async () => {
+                const backup = await exportLibrary()
+                download(
+                  `openquiz-backup-${new Date().toISOString().slice(0, 10)}.json`,
+                  JSON.stringify(backup, null, 2),
+                )
+              }}
+            >
+              Export
+            </Button>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-4 py-4">
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold">Restore from a file</span>
+              <span className="block text-xs text-[var(--oq-text-faint)]">
+                A full backup, or a single exported set
+              </span>
+            </span>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="application/json,.json"
+              aria-label="Backup file"
+              onChange={(e) => void onFile(e.target.files?.[0])}
+              className="max-w-[220px] text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-[--color-indigo-soft] file:px-3 file:py-2 file:text-xs file:font-semibold file:text-[--color-indigo-oq]"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-4 py-4">
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold">Delete everything</span>
+              <span className="block text-xs text-[var(--oq-text-faint)]">
+                Removes all sets and progress from this device
+              </span>
+            </span>
+            <Button variant="danger" size="sm" onClick={() => setConfirmWipe(true)}>
+              Delete all data
+            </Button>
+          </div>
+        </div>
+      </Section>
+
+      {message && (
+        <p
+          role="status"
+          className={
+            'mt-5 rounded-lg px-4 py-3 text-sm font-semibold ' +
+            (message.tone === 'ok'
+              ? 'bg-[--color-mint-soft] text-[#12794a]'
+              : 'bg-[--color-coral-soft] text-[#a63a28]')
+          }
+        >
+          {message.text}
+        </p>
+      )}
+
+      <p className="mt-10 text-center text-xs text-[var(--oq-text-faint)]">
+        OpenQuiz is open source and stores nothing outside this browser.
+      </p>
+
+      <Modal
+        open={confirmWipe}
+        onClose={() => setConfirmWipe(false)}
+        title="Delete all data?"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setConfirmWipe(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              onClick={async () => {
+                await wipeLibrary()
+                setConfirmWipe(false)
+                setMessage({ tone: 'ok', text: 'All data deleted from this device.' })
+              }}
+            >
+              Delete everything
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-[var(--oq-text-soft)]">
+          Every set, folder and piece of progress will be removed from this browser. There is no
+          cloud copy — export a backup first if you might want any of it back.
+        </p>
+      </Modal>
+    </Page>
+  )
+}
