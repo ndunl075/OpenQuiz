@@ -18,6 +18,21 @@ export async function recordAnswer(
   return next
 }
 
+/**
+ * Replay an answer as correct from the state *before* it was graded, so
+ * "I was right" erases the miss instead of stacking a promotion on top of
+ * the demotion it just caused.
+ */
+export async function overrideAnswer(
+  setId: SetId,
+  termId: TermId,
+  before: Progress | undefined,
+): Promise<Progress> {
+  const next = applyAnswer(before ?? emptyProgress(setId, termId), true)
+  await db.progress.put(next)
+  return next
+}
+
 export async function setKnown(setId: SetId, termId: TermId, known: boolean): Promise<Progress> {
   const existing = (await db.progress.get([setId, termId])) ?? emptyProgress(setId, termId)
   const next: Progress = { ...existing, known, lastSeen: Date.now() }
