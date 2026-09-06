@@ -226,7 +226,12 @@ export default function Learn() {
 
                 <div className="mt-4 flex min-h-[168px] flex-col justify-center rounded-2xl border border-[var(--oq-line)] bg-[var(--oq-surface)] px-7 py-8 oq-shadow">
                   <div className="flex items-start justify-between gap-4">
-                    <p className="text-xl font-semibold leading-snug sm:text-2xl">{promptText}</p>
+                    <p
+                      data-testid="prompt"
+                      className="text-xl font-semibold leading-snug sm:text-2xl"
+                    >
+                      {promptText}
+                    </p>
                     <IconButton
                       label="Read the prompt aloud"
                       size="sm"

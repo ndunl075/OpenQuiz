@@ -27,6 +27,8 @@ export function useStudySet(id: string): StudySetState {
 
   useEffect(() => {
     let alive = true
+    // Loading external data is what an effect is for; guarded by `alive`.
+    // oxlint-disable-next-line react/set-state-in-effect
     setLoading(true)
     void Promise.all([getSet(id), loadProgress(id)]).then(([nextSet, nextProgress]) => {
       if (!alive) return
