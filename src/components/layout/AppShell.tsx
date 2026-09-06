@@ -33,7 +33,7 @@ export function Page({
   width = 'max-w-[1000px]',
   className = '',
 }: {
-  children: React.ReactNode
+  children?: React.ReactNode
   width?: string
   className?: string
 }) {
