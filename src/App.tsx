@@ -9,6 +9,7 @@ import Flashcards from './routes/modes/Flashcards'
 import Learn from './routes/modes/Learn'
 import Write from './routes/modes/Write'
 import Spell from './routes/modes/Spell'
+import Test from './routes/modes/Test'
 import NotFound from './routes/NotFound'
 import { applyTheme, useSettings } from './store/useSettings'
 
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="set/:id/learn" element={<Learn />} />
         <Route path="set/:id/write" element={<Write />} />
         <Route path="set/:id/spell" element={<Spell />} />
+        <Route path="set/:id/test" element={<Test />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
