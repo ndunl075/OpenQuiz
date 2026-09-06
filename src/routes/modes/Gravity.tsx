@@ -12,16 +12,18 @@ import { loadModeStats, recordAnswer, recordModeStats } from '../../store/progre
 import { useSettings } from '../../store/useSettings'
 import { grade } from '../../lib/grade'
 import { shuffle } from '../../lib/shuffle'
+import {
+  STARTING_LIVES,
+  TERMS_PER_LEVEL,
+  TICK_MS,
+  fallDurationMs,
+  levelFor,
+  pointsFor,
+  type Difficulty,
+} from '../../lib/gravity'
 import type { Term } from '../../lib/types'
 
-type Difficulty = 'easy' | 'normal' | 'hard'
 type Phase = 'ready' | 'playing' | 'over'
-
-/** Seconds a term takes to fall at level 1, per difficulty. */
-const BASE_FALL_SECONDS: Record<Difficulty, number> = { easy: 14, normal: 10, hard: 7 }
-const TERMS_PER_LEVEL = 5
-const STARTING_LIVES = 3
-const TICK_MS = 50
 
 interface Falling {
   term: Term
@@ -52,10 +54,7 @@ export default function Gravity() {
 
   const best = stats?.get('gravity')?.bestScore
   const promptSide = settings.promptSide
-  const fallMs = useMemo(
-    () => Math.max(2600, BASE_FALL_SECONDS[difficulty] * 1000 * 0.86 ** (level - 1)),
-    [difficulty, level],
-  )
+  const fallMs = useMemo(() => fallDurationMs(difficulty, level), [difficulty, level])
 
   const nextTerm = useCallback(
     (from: Term[]): { term: Term | null; rest: Term[] } => {
@@ -143,13 +142,11 @@ export default function Gravity() {
     const expected = promptSide === 'term' ? falling.term.definition : falling.term.term
     if (grade(typed, expected, settings.typoTolerance) === 'incorrect') return
 
-    // Later levels and higher positions are worth more.
-    const points = Math.round(100 * level * (0.5 + (1 - falling.progress) / 2))
-    const nextScore = score + points
+    const nextScore = score + pointsFor(level, falling.progress)
     const nextAnswered = answeredCount + 1
     setScore(nextScore)
     setAnsweredCount(nextAnswered)
-    setLevel(Math.floor(nextAnswered / TERMS_PER_LEVEL) + 1)
+    setLevel(levelFor(nextAnswered))
     setFlash('hit')
     setTimeout(() => setFlash(null), 300)
     await recordAnswer(id, falling.term.id, true)
