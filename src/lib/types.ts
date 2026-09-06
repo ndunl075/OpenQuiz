@@ -77,6 +77,8 @@ export interface Settings {
   shuffleDefault: boolean
   starredOnlyDefault: boolean
   typoTolerance: boolean
+  /** After a miss in Write, copy the correct answer once before moving on. */
+  retypeOnMiss: boolean
   reducedMotion: boolean
 }
 
@@ -88,5 +90,6 @@ export const DEFAULT_SETTINGS: Settings = {
   shuffleDefault: false,
   starredOnlyDefault: false,
   typoTolerance: true,
+  retypeOnMiss: true,
   reducedMotion: false,
 }

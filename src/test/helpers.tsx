@@ -2,7 +2,8 @@ import { render } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import type { ReactElement } from 'react'
 import { db } from '../lib/db'
-import type { StudySet, Term } from '../lib/types'
+import { useSettings } from '../store/useSettings'
+import { DEFAULT_SETTINGS, type Settings, type StudySet, type Term } from '../lib/types'
 
 export function makeTerms(pairs: Array<[string, string]>): Term[] {
   return pairs.map(([term, definition], i) => ({
@@ -39,7 +40,18 @@ export async function seedSet(overrides: Partial<StudySet> = {}): Promise<StudyS
   return set
 }
 
+/**
+ * Modes read settings from the Zustand store, which App normally hydrates.
+ * Tests render modes directly, so set the store as well as the database.
+ */
+export async function setSettings(patch: Partial<Settings>) {
+  const settings = { ...DEFAULT_SETTINGS, ...patch, id: 'singleton' as const }
+  await db.settings.put(settings)
+  useSettings.setState({ settings, loaded: true })
+}
+
 export async function clearDb() {
+  useSettings.setState({ settings: DEFAULT_SETTINGS, loaded: true })
   await Promise.all([
     db.sets.clear(),
     db.folders.clear(),
@@ -48,6 +60,10 @@ export async function clearDb() {
     db.settings.clear(),
   ])
 }
+
+/** Definition for a term, and vice versa, for the sample set. */
+export const DEFINITION_OF = new Map(SAMPLE_PAIRS)
+export const TERM_OF = new Map(SAMPLE_PAIRS.map(([term, def]) => [def, term]))
 
 /** Renders `element` at `/set/:id/<path>` with routing wired up. */
 export function renderAtSetRoute(element: ReactElement, path: string, setId = 'set-1') {

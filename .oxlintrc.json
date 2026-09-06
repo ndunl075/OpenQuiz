@@ -3,6 +3,21 @@
   "plugins": ["react", "typescript", "oxc"],
   "rules": {
     "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
     "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/test/**", "**/*.test.ts", "**/*.test.tsx"],
+      "rules": {
+        "react/only-export-components": "off"
+      }
+    },
+    {
+      "files": ["src/components/ui/Button.tsx", "src/components/ModeTiles.tsx"],
+      "rules": {
+        "react/only-export-components": "off"
+      }
+    }
+  ]
 }
