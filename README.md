@@ -1,73 +1,174 @@
 <h1 align="center">OpenQuiz</h1>
 
 <p align="center">
-  An open-source, local-first study app with every study mode.<br />
-  No accounts. No cloud. No tracking. Your sets never leave your device.
+  A free flashcards app with seven ways to study.<br />
+  No sign-up, no subscription, no ads — and your notes never leave your device.
 </p>
 
 ---
 
-## Why
+## What is it?
 
-Flashcard apps have grown accounts, paywalls, social feeds and ads around what
-should be a simple loop: see a term, recall it, repeat what you missed.
-OpenQuiz keeps the loop and drops the rest.
+OpenQuiz is a study app. You type in a list of things you want to remember —
+Spanish words, exam definitions, capital cities, anything with two sides — and
+it drills you on them until they stick.
 
-## Study modes
+It's the same idea as Quizlet or Anki, with two differences:
 
-| Mode | What it does |
+- **It's completely free, forever.** No account, no paywall, no ads, no upsell.
+- **Your study sets stay on your own device.** Nothing is uploaded anywhere.
+  There's no company server holding your notes, because there's no server at all.
+
+## The seven ways to study
+
+You make a set once, then practise it in whichever mode suits you.
+
+| | What it's like |
 |---|---|
-| **Flashcards** | 3D flip cards with swipe, shuffle, autoplay and Know / Still-learning sorting. |
-| **Learn** | Adaptive rounds that move you from multiple choice to written recall as terms stick. |
-| **Write** | Typed recall with smart grading and an "I was right" override. |
-| **Spell** | Listen and type. Character-level feedback on every miss. |
-| **Test** | Generated exams: written, multiple choice, true/false and matching. |
-| **Match** | Race the clock pairing terms with definitions. |
-| **Gravity** | Type the answer before the term hits the ground. |
+| 🃏 **Flashcards** | Classic cards you flip over. Sort them into "I know this" and "still learning" as you go. |
+| 🧠 **Learn** | The app works out what you don't know and keeps bringing it back. It starts you on multiple choice, then makes you type the answer once you've got the hang of it. |
+| ✍️ **Write** | Type every answer from memory. Get one wrong and it makes you write the correct answer out once before moving on. |
+| 🔊 **Spell** | The app reads a word aloud and you type what you hear. Handy for languages. It shows you exactly which letters you got wrong. |
+| 📝 **Test** | A practice exam. Choose how many questions and what kind — typed answers, multiple choice, true/false, matching — then get a score and see what you missed. |
+| 🎯 **Match** | A timed game. Pair each term with its definition as fast as you can and beat your own record. |
+| ☄️ **Gravity** | Words fall down the screen and you type the answer before they land. Three lives, and it speeds up as you go. |
 
-## Everything is local
+## What else it does
 
-Data lives in your browser's IndexedDB. There is no server, no API key and no
-sign-in. Export any set — or your whole library — to JSON or CSV at any time,
-and import it on another device.
+- **Paste in a whole list at once.** Copy a column out of a spreadsheet or a
+  document and OpenQuiz will turn it into cards for you.
+- **Tracks what you've learned** across every mode, so progress in Learn also
+  counts in Write, and vice versa.
+- **Forgives typos.** Get one letter wrong and it says "watch your spelling"
+  instead of marking you down. There's also an "I was right" button for when it
+  gets it wrong.
+- **Reads things aloud**, in the language you pick for the set.
+- **Star the hard ones** and study only those.
+- **Folders** to keep subjects apart.
+- **Dark mode**, and it works on a phone.
+- **Works offline.** Once it's loaded, you don't need internet to study.
 
-## Getting started
+## About your data — please read this bit
+
+Everything you make is saved in your web browser on the device you're using. That's
+good for privacy: nobody else can see it, and we couldn't look at it if we wanted to.
+
+But it also means **nothing is backed up automatically**. If you clear your
+browser history and site data, or uninstall the browser, your sets go with it.
+
+So: go to **Settings → Back up everything** now and then. It saves one file you
+can keep safe, email to yourself, or load onto another computer. You can also
+export a single set on its own.
+
+## Getting it running
+
+> **In short:** OpenQuiz is free software rather than a website you can just
+> visit, so someone needs to set it up once. It takes about two minutes and
+> after that it's a normal app in your browser.
+
+**If you're comfortable with a terminal**, or have someone who is:
+
+1. Install [Node.js](https://nodejs.org) (pick the "LTS" version).
+2. Download this project — the green **Code** button above, then
+   **Download ZIP** — and unzip it.
+3. Open a terminal in that folder and run these two lines, one at a time:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+4. Open **http://localhost:5173** in your browser. That's it.
+
+To keep using it later, run `npm run dev` again and open the same address.
+
+### Or put it online for free
+
+If you'd rather have a normal web address you can open on any device, you can
+host OpenQuiz on **Vercel** (or Netlify, Cloudflare Pages, GitHub Pages) at no
+cost. Point Vercel at this repository and it will build and publish it — the
+settings it needs are already in `vercel.json`, so there's nothing to configure.
+
+**Hosting it does not change where your data lives.** The host only sends the
+app to your browser, the same way it sends any web page. Everything you type is
+still saved by your own browser, on your own device. Vercel never receives your
+sets, and neither does anyone else.
+
+The one thing to know: browser storage is per-device and per-browser. Your sets
+on your laptop are separate from your sets on your phone, even at the same web
+address. Use **Settings → Back up everything** on one and import the file on the
+other to move them across.
+
+## Common questions
+
+**Do I need an account?**
+No. There isn't one to make.
+
+**Is it really free?**
+Yes, and there's no paid tier. The [licence](./LICENSE) lets anyone use, change
+and share it.
+
+**Can I share a set with a classmate?**
+Not by link — there's no server to host one. But you can export a set to a file
+and send it to them, and they can import it.
+
+**Will my study progress sync between my laptop and my phone?**
+Not on its own, even if you host it online — your browser does the saving, not a
+server. Export a backup on one device and import it on the other.
+
+**Is this Quizlet?**
+No, and it isn't affiliated with them. It's an independent project inspired by
+the same study-mode format, written from scratch.
+
+---
+
+<details>
+<summary><strong>For developers</strong></summary>
+
+### Stack
+
+Vite + React 19 + TypeScript, Tailwind v4, Motion for animation, Zustand for
+session state, Dexie (IndexedDB) for persistence, React Router 7.
+
+### Commands
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-```
+npm run dev       # dev server on http://localhost:5173
 
-```bash
 npm run build     # type-check + production bundle
-npm test          # unit tests
-npm run test:e2e  # browser journey over the built app
+npm test          # 127 unit tests (Vitest)
+npm run test:e2e  # 14 browser journeys over the built app (Playwright)
 npm run lint      # oxlint, warnings are errors
 ```
 
-`test:e2e` serves the production build and drives a real Chromium through
-creating a set and visiting every study mode, failing on any console or page
-error. It needs a browser once: `npx playwright install chromium`.
+`test:e2e` serves the production build and drives real Chromium through creating
+a set and visiting every study mode, failing on any console or page error. It
+needs a browser once: `npx playwright install chromium`. All four commands gate
+every pull request in CI.
 
-The production build is a static site: drop `dist/` on any static host, or
-install it as a PWA and use it offline.
+The production build is a static site — drop `dist/` on any static host, or
+install it as a PWA and use it offline. `vercel.json` sets the build and, more
+importantly, the SPA rewrite: without it a refresh on `/library` or
+`/set/:id/learn` 404s, since those paths are routes rather than files.
 
-## Documentation
+### Documentation
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — data model, module layout, mode design,
-  the grading engine and the scheduler.
+[ARCHITECTURE.md](./ARCHITECTURE.md) covers the data model, module layout,
+per-mode design, the shared grading engine, the Leitner scheduler and the route
+transition handling.
 
-## Non-goals
+### Non-goals
 
-Accounts, cloud sync, sharing links, classes, comments, ads and telemetry are
-all out of scope. If a feature needs a backend, it does not belong here.
+Accounts, cloud sync, sharing links, classes, comments, ads and telemetry are all
+out of scope. If a feature needs a backend, it does not belong here.
 
-## Prior art and independence
+</details>
+
+## Licence
+
+[MIT](./LICENSE) — free to use, change and share.
 
 OpenQuiz is an independent project inspired by the study-mode format popularised
-by tools like Quizlet. It shares no code, assets or branding with any of them,
-and is not affiliated with or endorsed by any such company.
-
-## License
-
-[MIT](./LICENSE)
+by tools like Quizlet. It shares no code, assets or branding with any of them, and
+is not affiliated with or endorsed by any such company.
