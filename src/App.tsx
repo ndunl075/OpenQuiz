@@ -10,6 +10,8 @@ import Learn from './routes/modes/Learn'
 import Write from './routes/modes/Write'
 import Spell from './routes/modes/Spell'
 import Test from './routes/modes/Test'
+import Match from './routes/modes/Match'
+import Gravity from './routes/modes/Gravity'
 import NotFound from './routes/NotFound'
 import { applyTheme, useSettings } from './store/useSettings'
 
@@ -43,6 +45,8 @@ export default function App() {
         <Route path="set/:id/write" element={<Write />} />
         <Route path="set/:id/spell" element={<Spell />} />
         <Route path="set/:id/test" element={<Test />} />
+        <Route path="set/:id/match" element={<Match />} />
+        <Route path="set/:id/gravity" element={<Gravity />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
