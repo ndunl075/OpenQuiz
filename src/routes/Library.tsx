@@ -127,7 +127,7 @@ export default function Library() {
                     key={folder.id}
                     className="flex items-center gap-4 rounded-xl border border-[var(--oq-line)] bg-[var(--oq-surface)] px-5 py-4"
                   >
-                    <IconFolder className="text-[--color-indigo-oq]" />
+                    <IconFolder className="text-indigo-oq" />
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-bold">{folder.name}</p>
                       <p className="text-xs text-[var(--oq-text-faint)]">

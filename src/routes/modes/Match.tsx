@@ -146,7 +146,7 @@ export default function Match() {
               </p>
               {best !== undefined && (
                 <p className="mt-4 text-sm font-bold">
-                  Your best: <span className="text-[--color-indigo-oq]">{formatMs(best)}s</span>
+                  Your best: <span className="text-indigo-oq">{formatMs(best)}s</span>
                 </p>
               )}
               <Button size="lg" className="mt-7" onClick={start}>
@@ -224,11 +224,11 @@ export default function Match() {
                         'flex min-h-[110px] items-center justify-center rounded-xl border-2 p-3 text-center',
                         'text-sm font-medium leading-snug transition-colors',
                         isCleared && 'pointer-events-none',
-                        isWrong && 'animate-shake border-[--color-coral] bg-[--color-coral-soft]',
-                        isSelected && !isWrong && 'border-[--color-indigo-oq] bg-[--color-indigo-soft]',
+                        isWrong && 'animate-shake border-coral bg-coral-soft',
+                        isSelected && !isWrong && 'border-indigo-oq bg-indigo-soft',
                         !isSelected &&
                           !isWrong &&
-                          'border-[var(--oq-line)] bg-[var(--oq-surface)] hover:border-[--color-indigo-oq]',
+                          'border-[var(--oq-line)] bg-[var(--oq-surface)] hover:border-indigo-oq',
                       )}
                     >
                       {tile.text}

@@ -63,7 +63,7 @@ export function Menu({
                 className={clsx(
                   'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium transition-colors',
                   item.danger
-                    ? 'text-[--color-coral] hover:bg-[--color-coral-soft]'
+                    ? 'text-coral hover:bg-coral-soft'
                     : 'text-[var(--oq-text)] hover:bg-[var(--oq-surface-2)]',
                 )}
               >

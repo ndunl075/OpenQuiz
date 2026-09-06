@@ -227,7 +227,7 @@ export default function Gravity() {
               {best !== undefined && (
                 <p className="mt-5 text-sm font-bold">
                   High score:{' '}
-                  <span className="text-[--color-indigo-oq]">{best.toLocaleString()}</span>
+                  <span className="text-indigo-oq">{best.toLocaleString()}</span>
                 </p>
               )}
               <Button size="lg" className="mt-6" onClick={start}>
@@ -277,8 +277,8 @@ export default function Gravity() {
               <div
                 className={clsx(
                   'relative flex-1 overflow-hidden rounded-2xl border transition-colors',
-                  flash === 'hit' && 'border-[--color-mint] bg-[--color-mint-soft]',
-                  flash === 'miss' && 'border-[--color-coral] bg-[--color-coral-soft]',
+                  flash === 'hit' && 'border-mint bg-mint-soft',
+                  flash === 'miss' && 'border-coral bg-coral-soft',
                   !flash && 'border-[var(--oq-line)] bg-[var(--oq-surface)]',
                 )}
                 style={{ minHeight: 'clamp(300px, 46vh, 460px)' }}
@@ -296,7 +296,7 @@ export default function Gravity() {
                     <div
                       className={clsx(
                         'mx-auto w-fit max-w-[85%] rounded-xl px-5 py-3 text-center oq-shadow',
-                        'bg-[--color-indigo-oq] text-white',
+                        'bg-indigo-oq text-white',
                       )}
                       style={{
                         marginLeft: `${8 + falling.lane * 26}%`,
@@ -342,7 +342,7 @@ export default function Gravity() {
                   autoComplete="off"
                   autoCorrect="off"
                   spellCheck={false}
-                  className="w-full rounded-xl border-2 border-[var(--oq-line)] bg-[var(--oq-surface)] px-5 py-4 text-lg font-semibold outline-none transition-colors focus:border-[--color-indigo-oq]"
+                  className="w-full rounded-xl border-2 border-[var(--oq-line)] bg-[var(--oq-surface)] px-5 py-4 text-lg font-semibold outline-none transition-colors focus:border-indigo-oq"
                 />
               </div>
             </motion.div>

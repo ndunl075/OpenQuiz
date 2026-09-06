@@ -141,7 +141,7 @@ export default function SettingsPage() {
               accept="application/json,.json"
               aria-label="Backup file"
               onChange={(e) => void onFile(e.target.files?.[0])}
-              className="max-w-[220px] text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-[--color-indigo-soft] file:px-3 file:py-2 file:text-xs file:font-semibold file:text-[--color-indigo-oq]"
+              className="max-w-[220px] text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-soft file:px-3 file:py-2 file:text-xs file:font-semibold file:text-indigo-oq"
             />
           </div>
 
@@ -165,8 +165,8 @@ export default function SettingsPage() {
           className={
             'mt-5 rounded-lg px-4 py-3 text-sm font-semibold ' +
             (message.tone === 'ok'
-              ? 'bg-[--color-mint-soft] text-[#12794a]'
-              : 'bg-[--color-coral-soft] text-[#a63a28]')
+              ? 'bg-mint-soft text-[#12794a]'
+              : 'bg-coral-soft text-[#a63a28]')
           }
         >
           {message.text}

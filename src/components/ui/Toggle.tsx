@@ -22,7 +22,7 @@ export function Toggle({ checked, onChange, label, hint }: ToggleProps) {
         onClick={() => onChange(!checked)}
         className={clsx(
           'relative h-7 w-12 shrink-0 rounded-full transition-colors duration-200',
-          checked ? 'bg-[--color-indigo-oq]' : 'bg-[var(--oq-line)]',
+          checked ? 'bg-indigo-oq' : 'bg-[var(--oq-line)]',
         )}
       >
         <span
@@ -66,7 +66,7 @@ export function Segmented<T extends string>({
           className={clsx(
             'rounded-md px-3 py-1.5 text-[13px] font-semibold transition-colors',
             value === option.value
-              ? 'bg-[--color-indigo-oq] text-white'
+              ? 'bg-indigo-oq text-white'
               : 'text-[var(--oq-text-soft)] hover:text-[var(--oq-text)]',
           )}
         >

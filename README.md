@@ -39,10 +39,15 @@ npm run dev      # http://localhost:5173
 ```
 
 ```bash
-npm run build    # type-check + production bundle
-npm test         # unit tests
-npm run lint     # oxlint
+npm run build     # type-check + production bundle
+npm test          # unit tests
+npm run test:e2e  # browser journey over the built app
+npm run lint      # oxlint, warnings are errors
 ```
+
+`test:e2e` serves the production build and drives a real Chromium through
+creating a set and visiting every study mode, failing on any console or page
+error. It needs a browser once: `npx playwright install chromium`.
 
 The production build is a static site: drop `dist/` on any static host, or
 install it as a PWA and use it offline.

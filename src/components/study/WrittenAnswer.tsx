@@ -18,20 +18,20 @@ interface WrittenAnswerProps {
 
 const TONE: Record<Grade, { border: string; bg: string; label: string; text: string }> = {
   correct: {
-    border: 'border-[--color-mint]',
-    bg: 'bg-[--color-mint-soft]',
+    border: 'border-mint',
+    bg: 'bg-mint-soft',
     label: 'Correct',
     text: 'text-[#12794a]',
   },
   typo: {
-    border: 'border-[--color-lemon]',
+    border: 'border-lemon',
     bg: 'bg-[#fff6d9]',
     label: 'Almost — watch your spelling',
     text: 'text-[#8a6300]',
   },
   incorrect: {
-    border: 'border-[--color-coral]',
-    bg: 'bg-[--color-coral-soft]',
+    border: 'border-coral',
+    bg: 'bg-coral-soft',
     label: 'Correct answer',
     text: 'text-[#a63a28]',
   },
