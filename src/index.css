@@ -1,0 +1,206 @@
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+@import '@fontsource/poppins/700.css';
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ *
+ * Design tokens
+ * ------------------------------------------------------------------ */
+@theme {
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-indigo-oq: #4255ff;
+  --color-indigo-hover: #3b4ce0;
+  --color-indigo-dark: #2f3ba8;
+  --color-indigo-soft: #edefff;
+
+  --color-navy: #0a092d;
+  --color-navy-2: #2e3856;
+  --color-navy-3: #423ed8;
+
+  --color-ink: #303545;
+  --color-ink-soft: #586380;
+  --color-ink-faint: #939bb4;
+
+  --color-line: #d9dde8;
+  --color-line-dark: #3c4d70;
+
+  --color-canvas: #f6f7fb;
+  --color-surface: #ffffff;
+
+  --color-lemon: #ffcd1f;
+  --color-mint: #21bf73;
+  --color-mint-soft: #d9f2e6;
+  --color-coral: #ff725b;
+  --color-coral-soft: #ffe4df;
+  --color-plum: #a5b1ff;
+
+  --radius-card: 0.5rem;
+
+  --ease-quizlet: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ------------------------------------------------------------------ *
+ * Semantic surface variables (theme-swappable)
+ * ------------------------------------------------------------------ */
+:root {
+  --oq-bg: var(--color-canvas);
+  --oq-surface: #ffffff;
+  --oq-surface-2: #ffffff;
+  --oq-raised: #ffffff;
+  --oq-text: var(--color-ink);
+  --oq-text-soft: var(--color-ink-soft);
+  --oq-text-faint: var(--color-ink-faint);
+  --oq-line: var(--color-line);
+  --oq-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.1);
+  --oq-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --oq-bg: var(--color-navy);
+  --oq-surface: #2e3856;
+  --oq-surface-2: #243049;
+  --oq-raised: #39415f;
+  --oq-text: #f6f7fb;
+  --oq-text-soft: #b9c0d4;
+  --oq-text-faint: #8791ad;
+  --oq-line: var(--color-line-dark);
+  --oq-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  --oq-shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--oq-line);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--oq-bg);
+    color: var(--oq-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background: var(--color-indigo-oq);
+    color: #fff;
+  }
+
+  /* Slim scrollbars, Quizlet-style */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--oq-text-faint);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-indigo-oq);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .oq-surface {
+    background-color: var(--oq-surface);
+  }
+  .oq-bg {
+    background-color: var(--oq-bg);
+  }
+  .oq-card {
+    background-color: var(--oq-surface);
+    border: 1px solid var(--oq-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--oq-shadow);
+  }
+  .oq-text {
+    color: var(--oq-text);
+  }
+  .oq-text-soft {
+    color: var(--oq-text-soft);
+  }
+  .oq-text-faint {
+    color: var(--oq-text-faint);
+  }
+  .oq-line {
+    border-color: var(--oq-line);
+  }
+  .oq-shadow {
+    box-shadow: var(--oq-shadow);
+  }
+  .oq-shadow-lg {
+    box-shadow: var(--oq-shadow-lg);
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .perspective-1000 {
+    perspective: 1600px;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion
+ * ------------------------------------------------------------------ */
+@keyframes oq-shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+@keyframes oq-pop {
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes oq-rise {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes oq-pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(66, 85, 255, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(66, 85, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(66, 85, 255, 0); }
+}
+
+.animate-shake { animation: oq-shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+.animate-pop { animation: oq-pop 0.28s var(--ease-quizlet) both; }
+.animate-rise { animation: oq-rise 0.25s var(--ease-quizlet) both; }
+.animate-pulse-ring { animation: oq-pulse-ring 1.4s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
