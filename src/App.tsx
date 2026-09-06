@@ -5,6 +5,7 @@ import Home from './routes/Home'
 import Library from './routes/Library'
 import EditSet from './routes/EditSet'
 import SetDetail from './routes/SetDetail'
+import Flashcards from './routes/modes/Flashcards'
 import NotFound from './routes/NotFound'
 import { applyTheme, useSettings } from './store/useSettings'
 
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="create" element={<EditSet />} />
         <Route path="set/:id" element={<SetDetail />} />
         <Route path="set/:id/edit" element={<EditSet />} />
+        <Route path="set/:id/flashcards" element={<Flashcards />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
