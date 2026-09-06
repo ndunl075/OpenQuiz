@@ -2,6 +2,9 @@ import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import Home from './routes/Home'
+import Library from './routes/Library'
+import EditSet from './routes/EditSet'
+import SetDetail from './routes/SetDetail'
 import NotFound from './routes/NotFound'
 import { applyTheme, useSettings } from './store/useSettings'
 
@@ -26,6 +29,10 @@ export default function App() {
     <Routes>
       <Route element={<AppShell />}>
         <Route index element={<Home />} />
+        <Route path="library" element={<Library />} />
+        <Route path="create" element={<EditSet />} />
+        <Route path="set/:id" element={<SetDetail />} />
+        <Route path="set/:id/edit" element={<EditSet />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
