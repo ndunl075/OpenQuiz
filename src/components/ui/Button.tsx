@@ -28,15 +28,15 @@ const SIZES: Record<ButtonSize, string> = {
  */
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    'bg-[--color-indigo-oq] text-white shadow-[0_4px_0_0_var(--color-indigo-dark)] hover:bg-[--color-indigo-hover] active:translate-y-[4px] active:shadow-none',
+    'bg-indigo-oq text-white shadow-[0_4px_0_0_var(--color-indigo-dark)] hover:bg-indigo-hover active:translate-y-[4px] active:shadow-none',
   secondary:
     'bg-[var(--oq-raised)] text-[var(--oq-text)] border border-[var(--oq-line)] shadow-[0_4px_0_0_var(--oq-line)] hover:bg-[var(--oq-surface-2)] active:translate-y-[4px] active:shadow-none',
   outline:
-    'bg-transparent text-[--color-indigo-oq] border-2 border-[--color-indigo-oq] hover:bg-[--color-indigo-soft] active:scale-[0.98]',
+    'bg-transparent text-indigo-oq border-2 border-indigo-oq hover:bg-indigo-soft active:scale-[0.98]',
   ghost:
     'bg-transparent text-[var(--oq-text)] hover:bg-[var(--oq-surface-2)] active:scale-[0.98]',
   danger:
-    'bg-[--color-coral] text-white shadow-[0_4px_0_0_#c2452f] hover:brightness-105 active:translate-y-[4px] active:shadow-none',
+    'bg-coral text-white shadow-[0_4px_0_0_#c2452f] hover:brightness-105 active:translate-y-[4px] active:shadow-none',
 }
 
 const BASE =
@@ -125,7 +125,7 @@ export function IconButton({
         'text-[var(--oq-text-soft)] hover:bg-[var(--oq-surface-2)] hover:text-[var(--oq-text)]',
         'disabled:opacity-40 disabled:pointer-events-none',
         size === 'sm' ? 'h-8 w-8' : 'h-10 w-10',
-        active && 'text-[--color-indigo-oq]',
+        active && 'text-indigo-oq',
         className,
       )}
       {...rest}

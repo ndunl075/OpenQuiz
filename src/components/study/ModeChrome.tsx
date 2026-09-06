@@ -89,7 +89,7 @@ export function NotEnoughTerms({ setId, need }: { setId: string; need: number })
         </p>
         <button
           onClick={() => navigate(`/set/${setId}/edit`)}
-          className="mt-6 rounded-lg bg-[--color-indigo-oq] px-5 py-2.5 text-sm font-semibold text-white"
+          className="mt-6 rounded-lg bg-indigo-oq px-5 py-2.5 text-sm font-semibold text-white"
         >
           Edit set
         </button>

@@ -28,14 +28,14 @@ export function RoundSummary({
         <div>
           <div className="mb-1.5 flex justify-between text-sm font-bold">
             <span>Mastered</span>
-            <span className="text-[--color-mint]">{tally.mastered}</span>
+            <span className="text-mint">{tally.mastered}</span>
           </div>
           <ProgressBar value={tally.mastered} max={tally.total} color="var(--color-mint)" />
         </div>
         <div>
           <div className="mb-1.5 flex justify-between text-sm font-bold">
             <span>Still learning</span>
-            <span className="text-[--color-lemon]">{tally.learning}</span>
+            <span className="text-lemon">{tally.learning}</span>
           </div>
           <ProgressBar value={tally.learning} max={tally.total} color="var(--color-lemon)" />
         </div>
@@ -77,7 +77,7 @@ export function ModeComplete({
       transition={{ type: 'spring', stiffness: 300, damping: 28 }}
       className="mx-auto w-full max-w-lg rounded-2xl border border-[var(--oq-line)] bg-[var(--oq-surface)] px-8 py-12 text-center oq-shadow"
     >
-      <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[--color-mint-soft] text-3xl">
+      <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-mint-soft text-3xl">
         🎉
       </div>
       <h2 className="mt-5 text-2xl font-extrabold">{title}</h2>

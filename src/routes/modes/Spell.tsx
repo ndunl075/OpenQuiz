@@ -159,7 +159,7 @@ export default function Spell() {
                     onClick={say}
                     aria-label="Play the audio again"
                     className={clsx(
-                      'grid h-20 w-20 place-items-center rounded-full bg-[--color-indigo-oq] text-white transition-transform hover:scale-105',
+                      'grid h-20 w-20 place-items-center rounded-full bg-indigo-oq text-white transition-transform hover:scale-105',
                       phase === 'listening' && 'animate-pulse-ring',
                     )}
                   >
@@ -182,8 +182,8 @@ export default function Spell() {
                 <div
                   className={clsx(
                     'mt-6 rounded-xl border-2 px-5 py-4 transition-colors',
-                    phase === 'correct' && 'border-[--color-mint] bg-[--color-mint-soft]',
-                    phase === 'wrong' && 'animate-shake border-[--color-coral] bg-[--color-coral-soft]',
+                    phase === 'correct' && 'border-mint bg-mint-soft',
+                    phase === 'wrong' && 'animate-shake border-coral bg-coral-soft',
                     phase === 'listening' && 'border-[var(--oq-line)] bg-[var(--oq-surface)]',
                   )}
                 >
@@ -199,7 +199,7 @@ export default function Spell() {
                         <span
                           key={i}
                           className={clsx(
-                            d.ok ? '' : 'rounded bg-[--color-coral] px-0.5 text-white',
+                            d.ok ? '' : 'rounded bg-coral px-0.5 text-white',
                           )}
                         >
                           {d.char}

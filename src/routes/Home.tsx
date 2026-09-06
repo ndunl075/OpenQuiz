@@ -16,7 +16,7 @@ export default function Home() {
     <Page width="max-w-[1200px]">
       {sets.length === 0 && !loading ? (
         <>
-          <section className="overflow-hidden rounded-2xl bg-[--color-indigo-oq] px-8 py-14 text-white">
+          <section className="overflow-hidden rounded-2xl bg-indigo-oq px-8 py-14 text-white">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider">
               <IconLightning width={13} height={13} /> Local-first
             </span>
@@ -31,7 +31,7 @@ export default function Home() {
               to="/create"
               variant="secondary"
               size="lg"
-              className="mt-8 !text-[--color-indigo-oq]"
+              className="mt-8 !text-indigo-oq"
               icon={<IconPlus />}
             >
               Create your first set

@@ -216,7 +216,7 @@ function ConfigScreen({
               max={Math.max(1, maxQuestions)}
               value={Math.min(config.questionCount, maxQuestions)}
               onChange={(e) => onChange({ ...config, questionCount: Number(e.target.value) })}
-              className="flex-1 accent-[--color-indigo-oq]"
+              className="flex-1 accent-indigo-oq"
               aria-label="Number of questions"
             />
             <Input
@@ -249,7 +249,7 @@ function ConfigScreen({
             ))}
           </div>
           {noTypes && (
-            <p role="alert" className="mt-2 text-xs font-semibold text-[--color-coral]">
+            <p role="alert" className="mt-2 text-xs font-semibold text-coral">
               Pick at least one question type.
             </p>
           )}
@@ -364,8 +364,8 @@ function QuestionCard({
                     className={clsx(
                       'rounded-xl border-2 px-4 py-3 text-left text-sm font-medium transition-colors',
                       picked
-                        ? 'border-[--color-indigo-oq] bg-[--color-indigo-soft]'
-                        : 'border-[var(--oq-line)] hover:border-[--color-indigo-oq]',
+                        ? 'border-indigo-oq bg-indigo-soft'
+                        : 'border-[var(--oq-line)] hover:border-indigo-oq',
                     )}
                   >
                     {sideText(choice, answerSide(question.promptSide))}
@@ -395,8 +395,8 @@ function QuestionCard({
                       className={clsx(
                         'flex-1 rounded-xl border-2 px-4 py-3 text-sm font-bold transition-colors',
                         picked
-                          ? 'border-[--color-indigo-oq] bg-[--color-indigo-soft]'
-                          : 'border-[var(--oq-line)] hover:border-[--color-indigo-oq]',
+                          ? 'border-indigo-oq bg-indigo-soft'
+                          : 'border-[var(--oq-line)] hover:border-indigo-oq',
                       )}
                     >
                       {option.label}
@@ -478,7 +478,7 @@ function Results({
                           <span className="font-semibold">
                             {sideText(prompt, question.promptSide)}
                           </span>
-                          <span className={ok ? 'text-[--color-mint]' : 'text-[--color-coral]'}>
+                          <span className={ok ? 'text-mint' : 'text-coral'}>
                             {' → '}
                             {picked ? sideText(picked, side) : 'no answer'}
                           </span>
@@ -521,7 +521,7 @@ function Results({
                 )}
                 <p className="mt-2 text-sm">
                   <span className="text-[var(--oq-text-faint)]">You said: </span>
-                  <span className={ok ? 'text-[--color-mint]' : 'text-[--color-coral]'}>
+                  <span className={ok ? 'text-mint' : 'text-coral'}>
                     {shownGiven}
                   </span>
                 </p>
@@ -562,14 +562,14 @@ function ReviewCard({
       transition={{ delay: Math.min(index, 8) * 0.03 }}
       className={clsx(
         'rounded-xl border-l-4 border border-[var(--oq-line)] bg-[var(--oq-surface)] px-5 py-4',
-        ok ? 'border-l-[--color-mint]' : 'border-l-[--color-coral]',
+        ok ? 'border-l-mint' : 'border-l-coral',
       )}
     >
       <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-[var(--oq-text-faint)]">
         <span
           className={clsx(
             'grid h-5 w-5 place-items-center rounded-full text-white',
-            ok ? 'bg-[--color-mint]' : 'bg-[--color-coral]',
+            ok ? 'bg-mint' : 'bg-coral',
           )}
         >
           {ok ? <IconCheck width={12} height={12} /> : <IconClose width={12} height={12} />}

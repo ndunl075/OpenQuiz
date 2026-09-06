@@ -52,7 +52,7 @@ function Radios<T extends string>({
             className={
               'rounded-lg border px-3 py-1.5 text-[13px] font-semibold transition-colors ' +
               (value === choice.value
-                ? 'border-[--color-indigo-oq] bg-[--color-indigo-soft] text-[--color-indigo-oq]'
+                ? 'border-indigo-oq bg-indigo-soft text-indigo-oq'
                 : 'border-[var(--oq-line)] text-[var(--oq-text-soft)] hover:text-[var(--oq-text)]')
             }
           >

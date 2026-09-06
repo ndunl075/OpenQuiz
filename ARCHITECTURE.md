@@ -146,11 +146,28 @@ Mode routes hold **no** persistent state of their own. Refreshing mid-session re
 
 | Layer | What |
 |---|---|
-| `lib/*` | Grading, scheduler, import parser, shuffle — pure-function unit tests. |
+| `lib/*` | Grading, scheduler, test generator, import parser, backup, shuffle — pure-function unit tests. |
 | Stores | Dexie CRUD against `fake-indexeddb`. |
 | Components | Render + interaction for each mode's core loop via Testing Library. |
+| `e2e/` | Playwright drives the built app: create a set, visit all seven modes, fail on any console or page error. |
 
-`npm test` runs Vitest; `npm run build` type-checks (`tsc -b`) then bundles. Both gate every PR.
+Unit tests cannot see a stylesheet that does not apply or a route that mounts
+twice, so the e2e journey is not optional — it is the layer that catches those.
+
+`npm test` runs Vitest, `npm run test:e2e` runs the journey, `npm run lint`
+treats warnings as errors, and `npm run build` type-checks then bundles. All
+four gate every PR.
+
+---
+
+## 11. Route transitions
+
+`AppShell` animates between pages with `AnimatePresence mode="wait"`, which
+keeps the outgoing page mounted while it animates out. `useOutlet()` returns the
+*incoming* route as soon as the URL changes, so the new page would render inside
+the outgoing wrapper and then mount a second time when the key swaps — silently
+discarding any state set during the transition. `FrozenOutlet` captures the
+outlet at mount so the exiting subtree keeps rendering the route it belongs to.
 
 ---
 

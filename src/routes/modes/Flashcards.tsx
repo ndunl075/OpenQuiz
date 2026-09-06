@@ -166,10 +166,10 @@ export default function Flashcards() {
       <div className="mx-auto flex w-full max-w-[860px] flex-1 flex-col px-4 pb-10 sm:px-6">
         {sortMode && !finished && (
           <div className="mb-4 flex items-center justify-between text-sm font-bold">
-            <span className="rounded-full bg-[--color-coral-soft] px-3 py-1 text-[#a63a28]">
+            <span className="rounded-full bg-coral-soft px-3 py-1 text-[#a63a28]">
               {tally.learning} still learning
             </span>
-            <span className="rounded-full bg-[--color-mint-soft] px-3 py-1 text-[#12794a]">
+            <span className="rounded-full bg-mint-soft px-3 py-1 text-[#12794a]">
               {tally.known} know
             </span>
           </div>
@@ -271,7 +271,7 @@ export default function Flashcards() {
                 <Button
                   variant="secondary"
                   size="lg"
-                  className="!border-[--color-coral] !text-[--color-coral] !shadow-[0_4px_0_0_var(--color-coral)]"
+                  className="!border-coral !text-coral !shadow-[0_4px_0_0_var(--color-coral)]"
                   icon={<IconClose />}
                   onClick={() => void sortCurrent('learning')}
                 >
@@ -283,7 +283,7 @@ export default function Flashcards() {
                 <Button
                   variant="secondary"
                   size="lg"
-                  className="!border-[--color-mint] !text-[--color-mint] !shadow-[0_4px_0_0_var(--color-mint)]"
+                  className="!border-mint !text-mint !shadow-[0_4px_0_0_var(--color-mint)]"
                   icon={<IconCheck />}
                   onClick={() => void sortCurrent('known')}
                 >

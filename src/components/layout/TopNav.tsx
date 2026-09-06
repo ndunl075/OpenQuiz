@@ -8,7 +8,7 @@ import { useSettings } from '../../store/useSettings'
 function Logo() {
   return (
     <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="OpenQuiz home">
-      <span className="grid h-8 w-8 place-items-center rounded-lg bg-[--color-indigo-oq] text-white">
+      <span className="grid h-8 w-8 place-items-center rounded-lg bg-indigo-oq text-white">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
             d="M4 6.5A2.5 2.5 0 0 1 6.5 4H14l6 6v7.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"
@@ -22,6 +22,12 @@ function Logo() {
     </Link>
   )
 }
+
+const NAV_ITEMS = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/library', label: 'Your library', end: false },
+  { to: '/stats', label: 'Stats', end: false },
+]
 
 export function TopNav() {
   const navigate = useNavigate()
@@ -48,11 +54,7 @@ export function TopNav() {
         <Logo />
 
         <nav className="hidden items-center gap-1 md:flex">
-          {[
-            { to: '/', label: 'Home', end: true },
-            { to: '/library', label: 'Your library' },
-            { to: '/stats', label: 'Stats' },
-          ].map((item) => (
+          {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -61,7 +63,7 @@ export function TopNav() {
                 clsx(
                   'rounded-lg px-3 py-2 text-sm font-semibold transition-colors',
                   isActive
-                    ? 'text-[--color-indigo-oq]'
+                    ? 'text-indigo-oq'
                     : 'text-[var(--oq-text-soft)] hover:bg-[var(--oq-surface-2)] hover:text-[var(--oq-text)]',
                 )
               }
@@ -85,7 +87,7 @@ export function TopNav() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search your sets"
             aria-label="Search your sets"
-            className="h-11 w-full rounded-full border border-transparent bg-[var(--oq-surface-2)] pl-11 pr-4 text-sm outline-none transition-colors focus:border-[--color-indigo-oq] focus:bg-[var(--oq-surface)]"
+            className="h-11 w-full rounded-full border border-transparent bg-[var(--oq-surface-2)] pl-11 pr-4 text-sm outline-none transition-colors focus:border-indigo-oq focus:bg-[var(--oq-surface)]"
             style={{ backgroundColor: 'var(--oq-bg)' }}
           />
         </form>
@@ -110,6 +112,30 @@ export function TopNav() {
           </Button>
         </div>
       </div>
+      {/* The desktop links live in the bar above; on small screens they move
+          to a bottom tab row so Library and Stats stay reachable. */}
+      <nav
+        aria-label="Primary"
+        className="flex border-t border-[var(--oq-line)] md:hidden"
+      >
+        {NAV_ITEMS.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) =>
+              clsx(
+                'flex-1 py-2.5 text-center text-[13px] font-semibold transition-colors',
+                isActive
+                  ? 'text-indigo-oq'
+                  : 'text-[var(--oq-text-soft)] hover:text-[var(--oq-text)]',
+              )
+            }
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
       <span className="sr-only">{settings.theme}</span>
     </header>
   )

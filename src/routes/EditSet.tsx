@@ -122,7 +122,7 @@ export default function EditSet() {
           <button
             type="button"
             onClick={() => patch({ terms: [...set.terms].reverse() })}
-            className="flex items-center gap-1.5 text-xs font-semibold text-[--color-indigo-oq]"
+            className="flex items-center gap-1.5 text-xs font-semibold text-indigo-oq"
           >
             <IconShuffle width={14} height={14} /> Reverse order
           </button>
@@ -187,7 +187,7 @@ export default function EditSet() {
         type="button"
         onClick={addTerm}
         whileTap={{ scale: 0.99 }}
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[var(--oq-line)] py-6 text-sm font-bold text-[var(--oq-text-soft)] transition-colors hover:border-[--color-indigo-oq] hover:text-[--color-indigo-oq]"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[var(--oq-line)] py-6 text-sm font-bold text-[var(--oq-text-soft)] transition-colors hover:border-indigo-oq hover:text-indigo-oq"
       >
         <IconPlus width={18} height={18} /> Add a card
       </motion.button>
@@ -195,7 +195,7 @@ export default function EditSet() {
       {error && (
         <div
           role="alert"
-          className="mt-6 flex items-center justify-between gap-3 rounded-lg bg-[--color-coral-soft] px-4 py-3 text-sm font-semibold text-[#a63a28]"
+          className="mt-6 flex items-center justify-between gap-3 rounded-lg bg-coral-soft px-4 py-3 text-sm font-semibold text-[#a63a28]"
         >
           {error}
           <IconButton label="Dismiss" size="sm" onClick={() => setError('')}>
