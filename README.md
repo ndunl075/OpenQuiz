@@ -83,9 +83,19 @@ and import the file on the other one.
   an app. Settings shows this reminder on iOS.
 
 OpenQuiz asks your browser to protect its data from routine clean-up as soon as
-you make your first set, and Settings shows whether the browser agreed. That
-does not cover the two cases above, so **export a backup now and then** if the
-sets matter to you.
+you make your first set, and Settings shows whether the browser agreed. It also
+reminds you to take a backup when your library has gone a week without one.
+
+### The strongest option: keep a copy in a folder
+
+In **Settings → Keep a copy in a folder**, pick a folder once and OpenQuiz
+writes a backup file into it every time a set changes. That copy is an ordinary
+file on your disk, so it survives clearing your browser entirely — and if you
+choose a folder inside iCloud Drive, Google Drive or Dropbox, it reaches your
+other devices as well, without OpenQuiz ever uploading anything itself.
+
+This uses a browser feature Chrome and Edge on desktop support; Safari and
+Firefox do not, and the option is hidden where it is unavailable.
 
 ## Getting it running
 

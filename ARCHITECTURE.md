@@ -178,7 +178,16 @@ routine eviction. Settings reports the answer rather than assuming it.
 Two eviction paths remain outside the app's control, so it names them instead of
 implying durability it cannot provide: clearing browsing data, and iOS deleting
 script-writable storage after seven days without a visit — which only installing
-to the Home Screen avoids. Both are why export exists and why Settings pushes it.
+to the Home Screen avoids. `InstallBanner` offers that install where the browser
+allows it and explains the Share menu where it does not.
+
+`BackupBanner` asks for an exported file once a library has gone the reminder
+interval without one, and `lib/folderBackup.ts` removes the asking entirely where
+the File System Access API exists: the user picks a directory once, the handle is
+cached in memory and persisted to `settings`, and every set change schedules a
+debounced write of the whole library to a file in it. Permission does not survive
+a restart, so the status distinguishes `off` from `needs-permission` and Settings
+offers a reconnect rather than silently not backing up.
 
 ---
 

@@ -7,6 +7,14 @@ import { useSettings } from '../store/useSettings'
 import { importBackup, wipeLibrary } from '../lib/backup'
 import { backupLibrary } from '../store/backup'
 import { daysSinceBackup, describeLastBackup } from '../lib/backupReminder'
+import {
+  chooseFolder,
+  forgetFolder,
+  getFolderStatus,
+  reconnectFolder,
+  supportsFolderBackup,
+  type FolderStatus,
+} from '../lib/folderBackup'
 import { pluralize } from '../lib/format'
 import {
   formatBytes,
@@ -36,13 +44,16 @@ export default function SettingsPage() {
   const [message, setMessage] = useState<{ tone: 'ok' | 'bad'; text: string } | null>(null)
   const [confirmWipe, setConfirmWipe] = useState(false)
   const [storage, setStorage] = useState<StorageStatus | null>(null)
+  const [folder, setFolder] = useState<FolderStatus | null>(null)
   // Captured once: reading the clock during render makes the output unstable.
   const [renderedAt] = useState(() => Date.now())
 
   useEffect(() => {
     let alive = true
-    void getStorageStatus().then((status) => {
-      if (alive) setStorage(status)
+    void Promise.all([getStorageStatus(), getFolderStatus()]).then(([status, folderStatus]) => {
+      if (!alive) return
+      setStorage(status)
+      setFolder(folderStatus)
     })
     return () => {
       alive = false
@@ -213,6 +224,51 @@ export default function SettingsPage() {
               Export
             </Button>
           </div>
+
+          {supportsFolderBackup() && folder && folder.state !== 'unsupported' && (
+            <div className="flex flex-wrap items-center justify-between gap-4 py-4">
+              <span className="min-w-0">
+                <span className="block text-sm font-semibold">
+                  Keep a copy in a folder, updated automatically
+                </span>
+                <span className="block text-xs text-[var(--oq-text-faint)]">
+                  {folder.state === 'on'
+                    ? `Saving to "${folder.name}" every time a set changes. This copy survives clearing your browser.`
+                    : folder.state === 'needs-permission'
+                      ? `Your browser needs permission again to keep writing to "${folder.name}".`
+                      : 'Pick a folder once and OpenQuiz writes a backup file there on every change. Put it in iCloud Drive or Google Drive and it reaches your other devices too.'}
+                </span>
+              </span>
+              <span className="flex gap-2">
+                {folder.state === 'needs-permission' && (
+                  <Button size="sm" onClick={async () => setFolder(await reconnectFolder())}>
+                    Reconnect
+                  </Button>
+                )}
+                {folder.state === 'off' && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={async () => setFolder(await chooseFolder())}
+                  >
+                    Choose folder
+                  </Button>
+                )}
+                {folder.state === 'on' && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={async () => {
+                      await forgetFolder()
+                      setFolder(await getFolderStatus())
+                    }}
+                  >
+                    Stop
+                  </Button>
+                )}
+              </span>
+            </div>
+          )}
 
           <div className="flex flex-wrap items-center justify-between gap-4 py-4">
             <span className="min-w-0">
