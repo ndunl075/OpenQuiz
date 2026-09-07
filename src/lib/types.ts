@@ -81,6 +81,10 @@ export interface Settings {
   retypeOnMiss: boolean
   /** Set once the user dismisses the "install this app" banner. */
   installBannerDismissed: boolean
+  /** When a full library backup was last taken, 0 if never. */
+  lastBackupAt: number
+  /** Days between backup reminders. 0 turns them off. */
+  backupReminderDays: number
   reducedMotion: boolean
 }
 
@@ -94,5 +98,7 @@ export const DEFAULT_SETTINGS: Settings = {
   typoTolerance: true,
   retypeOnMiss: true,
   installBannerDismissed: false,
+  lastBackupAt: 0,
+  backupReminderDays: 7,
   reducedMotion: false,
 }

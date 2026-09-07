@@ -3,6 +3,7 @@ import { useLayoutEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { TopNav } from './TopNav'
 import { InstallBanner } from '../InstallBanner'
+import { BackupBanner } from '../BackupBanner'
 import { useAsync } from '../../hooks/useAsync'
 import { listSets } from '../../store/sets'
 
@@ -44,6 +45,7 @@ export function AppShell() {
     <div className="flex min-h-full flex-col">
       {!fullBleed && <TopNav />}
       {!fullBleed && <InstallBanner hasSets={(sets?.length ?? 0) > 0} />}
+      {!fullBleed && <BackupBanner />}
       <AnimatePresence mode="wait" initial={false}>
         <motion.main
           key={location.pathname}

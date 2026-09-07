@@ -4,8 +4,9 @@ import { Button } from '../components/ui/Button'
 import { Modal } from '../components/ui/Modal'
 import { Segmented, Toggle } from '../components/ui/Toggle'
 import { useSettings } from '../store/useSettings'
-import { exportLibrary, importBackup, wipeLibrary } from '../lib/backup'
-import { download } from '../lib/exportSet'
+import { importBackup, wipeLibrary } from '../lib/backup'
+import { backupLibrary } from '../store/backup'
+import { daysSinceBackup, describeLastBackup } from '../lib/backupReminder'
 import { pluralize } from '../lib/format'
 import {
   formatBytes,
@@ -35,6 +36,8 @@ export default function SettingsPage() {
   const [message, setMessage] = useState<{ tone: 'ok' | 'bad'; text: string } | null>(null)
   const [confirmWipe, setConfirmWipe] = useState(false)
   const [storage, setStorage] = useState<StorageStatus | null>(null)
+  // Captured once: reading the clock during render makes the output unstable.
+  const [renderedAt] = useState(() => Date.now())
 
   useEffect(() => {
     let alive = true
@@ -120,6 +123,12 @@ export default function SettingsPage() {
             checked={settings.shuffleDefault}
             onChange={(shuffleDefault) => void update({ shuffleDefault })}
           />
+          <Toggle
+            label="Remind me to back up"
+            hint="A weekly nudge while the library has no recent backup"
+            checked={settings.backupReminderDays > 0}
+            onChange={(on) => void update({ backupReminderDays: on ? 7 : 0 })}
+          />
         </div>
       </Section>
 
@@ -189,18 +198,16 @@ export default function SettingsPage() {
             <span className="min-w-0">
               <span className="block text-sm font-semibold">Back up everything</span>
               <span className="block text-xs text-[var(--oq-text-faint)]">
-                Sets, folders and progress as one JSON file
+                Sets, folders and progress as one JSON file —{' '}
+                {describeLastBackup(daysSinceBackup(settings.lastBackupAt, renderedAt))}
               </span>
             </span>
             <Button
               variant="secondary"
               size="sm"
               onClick={async () => {
-                const backup = await exportLibrary()
-                download(
-                  `openquiz-backup-${new Date().toISOString().slice(0, 10)}.json`,
-                  JSON.stringify(backup, null, 2),
-                )
+                await backupLibrary()
+                await update({ lastBackupAt: Date.now() })
               }}
             >
               Export
