@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
+import LandingGate from './routes/LandingGate'
 import Home from './routes/Home'
 import Library from './routes/Library'
 import EditSet from './routes/EditSet'
@@ -37,7 +38,8 @@ export default function App() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route index element={<Home />} />
+        <Route index element={<LandingGate />} />
+        <Route path="home" element={<Home />} />
         <Route path="library" element={<Library />} />
         <Route path="stats" element={<Stats />} />
         <Route path="settings" element={<SettingsPage />} />

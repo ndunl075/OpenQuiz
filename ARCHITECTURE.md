@@ -63,7 +63,8 @@ src/
 │  ├─ layout/      AppShell · TopNav · ModeNav · ModeHeader
 │  └─ study/       FlipCard · TermRow · AnswerFeedback · RoundSummary
 └─ routes/
-   ├─ Home · Library · CreateSet · EditSet · SetDetail · Stats · SettingsPage
+   ├─ Landing · LandingGate · Home · Library · CreateSet · EditSet
+   ├─ SetDetail · Stats · SettingsPage
    └─ modes/       Flashcards · Learn · Write · Spell · Test · Match · Gravity
 ```
 
@@ -160,7 +161,20 @@ four gate every PR.
 
 ---
 
-## 11. Route transitions
+## 11. Landing vs app
+
+`/` renders `LandingGate`. With no sets on the device it shows `Landing`, the
+marketing page; once the device has sets it redirects to `/home`, so a returning
+user opening the bookmarked root is not made to click past a pitch to reach their
+library. `/home` is the dashboard and never shows marketing copy.
+
+`Landing` is chromeless — `AppShell` hides the app nav on `/`, and the page
+carries its own minimal header — so a first-time visitor is not shown navigation
+to an empty library and stats.
+
+---
+
+## 12. Route transitions
 
 `AppShell` animates between pages with `AnimatePresence mode="wait"`, which
 keeps the outgoing page mounted while it animates out. `useOutlet()` returns the

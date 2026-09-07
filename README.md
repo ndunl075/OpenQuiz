@@ -78,7 +78,10 @@ export a single set on its own.
    npm run dev
    ```
 
-4. Open **http://localhost:5173** in your browser. That's it.
+4. Open **http://localhost:5173** in your browser. You'll get a page
+   introducing the app with a **Try OpenQuiz** button — click it and you're in.
+   Once you've made your first set, that address goes straight to your library
+   instead.
 
 To keep using it later, run `npm run dev` again and open the same address.
 
@@ -88,6 +91,10 @@ If you'd rather have a normal web address you can open on any device, you can
 host OpenQuiz on **Vercel** (or Netlify, Cloudflare Pages, GitHub Pages) at no
 cost. Point Vercel at this repository and it will build and publish it — the
 settings it needs are already in `vercel.json`, so there's nothing to configure.
+
+Visitors get a landing page explaining what OpenQuiz is, with a **Try OpenQuiz**
+button that opens the app. Anyone who has already made a set skips the landing
+page and goes straight to their library.
 
 **Hosting it does not change where your data lives.** The host only sends the
 app to your browser, the same way it sends any web page. Everything you type is

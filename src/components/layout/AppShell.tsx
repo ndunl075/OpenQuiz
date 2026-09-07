@@ -3,8 +3,13 @@ import { useLayoutEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { TopNav } from './TopNav'
 
-/** Chromeless routes: study modes take over the whole viewport. */
+/** Chromeless routes: study modes take over the whole viewport, and the
+ *  landing page carries its own header. */
 const FULL_BLEED = /\/set\/[^/]+\/(flashcards|learn|write|spell|test|match|gravity)/
+
+function isChromeless(pathname: string): boolean {
+  return pathname === '/' || FULL_BLEED.test(pathname)
+}
 
 /**
  * Holds the outlet element captured at mount.
@@ -22,7 +27,7 @@ function FrozenOutlet() {
 
 export function AppShell() {
   const location = useLocation()
-  const fullBleed = FULL_BLEED.test(location.pathname)
+  const fullBleed = isChromeless(location.pathname)
 
   // React Router keeps the scroll position across navigations, which lands you
   // halfway down a set page after creating it. Start each route at the top.
