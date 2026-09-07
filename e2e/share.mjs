@@ -11,13 +11,23 @@ const TAB = String.fromCharCode(9)
 const failures = []
 const browser = await chromium.launch(EXECUTABLE ? { executablePath: EXECUTABLE } : {})
 
-async function step(name, fn) {
+/** Generous: the receiving context loads the whole app cold on a shared CI runner. */
+const WAIT = 25_000
+
+async function step(name, fn, page) {
   try {
     await fn()
     console.log(`  ok   ${name}`)
   } catch (error) {
     const reason = String(error.message).split('\n')[0]
     console.log(`  FAIL ${name}: ${reason}`)
+    if (page) {
+      const heading = await page.locator('h1').first().textContent().catch(() => '(none)')
+      const body = ((await page.textContent('body').catch(() => '')) ?? '').replace(/\s+/g, ' ')
+      console.log(`       url: ${page.url().slice(0, 120)}`)
+      console.log(`       h1: ${heading}`)
+      console.log(`       body: ${body.slice(0, 200)}`)
+    }
     failures.push(`${name}: ${reason}`)
   }
 }
@@ -36,12 +46,12 @@ await step('a set can be shared as a link', async () => {
     .fill(`café${TAB}coffee\nnaïve${TAB}unworldly\n日本語${TAB}Japanese\ndelta${TAB}fourth`)
   await a.getByRole('button', { name: /import 4 terms/i }).click()
   await a.getByRole('button', { name: 'Create set' }).click()
-  await a.getByRole('heading', { name: 'Sent By Link' }).waitFor({ timeout: 10000 })
+  await a.getByRole('heading', { name: 'Sent By Link' }).waitFor({ timeout: WAIT })
 
   await a.getByRole('button', { name: 'More options' }).click()
   await a.getByRole('menuitem', { name: /share as a link/i }).click()
   const field = a.getByLabel('Share link')
-  await field.waitFor({ timeout: 8000 })
+  await field.waitFor({ timeout: WAIT })
   for (let i = 0; i < 40 && !link.startsWith('http'); i++) {
     link = (await field.inputValue()).trim()
     if (!link.startsWith('http')) await a.waitForTimeout(100)
@@ -57,36 +67,58 @@ await step('the payload rides in the fragment, not the path or query', async () 
   if (!url.pathname.endsWith('/shared')) throw new Error(`unexpected path ${url.pathname}`)
 })
 
-await step('a device that has never seen the app can open it', async () => {
-  const receiver = await browser.newContext()
-  const b = await receiver.newPage()
-  b.on('pageerror', (e) => failures.push(`receiver page error: ${e.message}`))
+const receiver = await browser.newContext()
+const b = await receiver.newPage()
+b.on('pageerror', (e) => failures.push(`receiver page error: ${e.message}`))
 
-  // Nothing may be fetched for the set itself: it is all in the URL.
-  const requests = []
-  b.on('request', (r) => requests.push(r.url()))
+// Nothing may be fetched for the set itself: it is all in the URL.
+const requests = []
+b.on('request', (r) => requests.push(r.url()))
 
-  await b.goto(link, { waitUntil: 'networkidle' })
-  await b.getByRole('heading', { name: 'Sent By Link' }).waitFor({ timeout: 10000 })
-  await b.getByText('café').waitFor({ timeout: 5000 })
-  await b.getByText('日本語').waitFor({ timeout: 5000 })
+await step(
+  'the link opens on a device that has never seen the app',
+  async () => {
+    await b.goto(link, { waitUntil: 'domcontentloaded' })
+    await b.getByText('Shared with you').waitFor({ timeout: WAIT })
+    await b.getByRole('heading', { name: 'Sent By Link' }).waitFor({ timeout: WAIT })
+  },
+  b,
+)
 
+await step(
+  'the shared terms are readable before anything is saved',
+  async () => {
+    await b.getByText('café').waitFor({ timeout: WAIT })
+    await b.getByText('日本語').waitFor({ timeout: WAIT })
+    await b.getByText(/nothing is saved until you add it/i).waitFor({ timeout: WAIT })
+  },
+  b,
+)
+
+await step('the fragment never reached the network', async () => {
   const leaked = requests.filter((url) => url.includes('café') || url.includes('#'))
   if (leaked.length > 0) throw new Error(`fragment reached the network: ${leaked[0]}`)
-
-  await b.getByRole('button', { name: /add to my sets/i }).click()
-  await b.getByRole('heading', { name: 'Sent By Link' }).waitFor({ timeout: 10000 })
-  await b.goto(`${BASE}/library`, { waitUntil: 'networkidle' })
-  await b.getByText('Sent By Link').first().waitFor({ timeout: 8000 })
-  await receiver.close()
 })
 
+await step(
+  'adding it saves the set to the receiving library',
+  async () => {
+    await b.getByRole('button', { name: /add to my sets/i }).click()
+    await b.waitForURL(/\/set\//, { timeout: WAIT })
+    await b.goto(`${BASE}/library`, { waitUntil: 'domcontentloaded' })
+    await b.getByText('Sent By Link').first().waitFor({ timeout: WAIT })
+  },
+  b,
+)
+
+await receiver.close()
+
 await step('a damaged link is explained rather than silently ignored', async () => {
-  const receiver = await browser.newContext()
-  const b = await receiver.newPage()
-  await b.goto(`${link.slice(0, link.indexOf('#') + 12)}`, { waitUntil: 'networkidle' })
-  await b.getByText(/this link didn't work/i).waitFor({ timeout: 8000 })
-  await receiver.close()
+  const context = await browser.newContext()
+  const page = await context.newPage()
+  await page.goto(`${link.slice(0, link.indexOf('#') + 12)}`, { waitUntil: 'domcontentloaded' })
+  await page.getByText(/this link didn't work/i).waitFor({ timeout: WAIT })
+  await context.close()
 })
 
 await browser.close()
