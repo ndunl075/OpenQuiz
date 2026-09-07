@@ -152,6 +152,8 @@ Mode routes hold **no** persistent state of their own. Refreshing mid-session re
 | Components | Render + interaction for each mode's core loop via Testing Library. |
 | `e2e/journey.mjs` | Playwright drives the built app: create a set, visit all seven modes, fail on any console or page error. |
 | `e2e/mobile.mjs` | The same flow across five phone profiles, asserting no horizontal overflow, no sub-16px fields, tappable controls and full-viewport pages. |
+| `e2e/flows.mjs` | Longer journeys: editing a saved set, folders, a full Learn round, export/import, history, keyboard. |
+| `e2e/pages.mjs` | The subpath build, served the way GitHub Pages serves it, including a deep link resolved through `404.html`. |
 
 Unit tests cannot see a stylesheet that does not apply or a route that mounts
 twice, so the e2e journey is not optional — it is the layer that catches those.
@@ -162,7 +164,21 @@ four gate every PR.
 
 ---
 
-## 11. Phones and iOS
+## 11. Hosting
+
+The app is a static bundle, so `base` is the only thing that varies between
+hosts. `BASE_PATH` sets it at build time; the router basename
+(`import.meta.env.BASE_URL`), the web manifest's `start_url` and `scope`, and the
+service worker scope all derive from it, so a subpath deploy needs no other
+change.
+
+GitHub Pages has no rewrite rules, so `scripts/pages-postbuild.mjs` copies
+`index.html` to `404.html` — Pages serves that for any unmatched path and the
+router takes over. Vercel does the same job with the rewrite in `vercel.json`.
+
+---
+
+## 12. Phones and iOS
 
 Handled centrally rather than per screen:
 
@@ -174,7 +190,7 @@ Handled centrally rather than per screen:
 
 ---
 
-## 12. Landing vs app
+## 13. Landing vs app
 
 `/` renders `LandingGate`. With no sets on the device it shows `Landing`, the
 marketing page; once the device has sets it redirects to `/home`, so a returning
@@ -187,7 +203,7 @@ to an empty library and stats.
 
 ---
 
-## 13. Route transitions
+## 14. Route transitions
 
 `AppShell` animates between pages with `AnimatePresence mode="wait"`, which
 keeps the outgoing page mounted while it animates out. `useOutlet()` returns the
