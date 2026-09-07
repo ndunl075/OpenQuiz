@@ -165,12 +165,16 @@ Yes, and there's no paid tier. The [licence](./LICENSE) lets anyone use, change
 and share it.
 
 **Can I share a set with a classmate?**
-Not by link — there's no server to host one. But you can export a set to a file
-and send it to them, and they can import it.
+Yes. On a set page, choose **Share as a link**. The whole set is packed into the
+link itself, so opening it gives them a copy immediately. Nothing is uploaded:
+the part after the `#` is never sent to any server, not even to whoever hosts
+OpenQuiz. Very large sets do not fit in a link, and the app says so and points
+you at export instead.
 
 **Will my study progress sync between my laptop and my phone?**
 Not on its own, even if you host it online — your browser does the saving, not a
-server. Export a backup on one device and import it on the other.
+server. Export a backup on one device and import it on the other, share
+individual sets by link, or point the folder backup at a synced folder.
 
 **Is this Quizlet?**
 No, and it isn't affiliated with them. It's an independent project inspired by
@@ -200,6 +204,7 @@ npm run test:flows   # longer user flows (editing, folders, export, offline)
 npm run test:pages   # the subpath build, served the way GitHub Pages serves it
 npm run test:modes   # plays every study mode and checks the answers grade right
 npm run test:persistence  # proves sets are stored on the device and never sent
+npm run test:share        # share links round-trip between two fresh browsers
 npm run lint      # oxlint, warnings are errors
 ```
 

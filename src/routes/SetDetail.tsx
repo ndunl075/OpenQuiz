@@ -5,6 +5,7 @@ import { ModeTiles } from '../components/ModeTiles'
 import { Button, ButtonLink, IconButton } from '../components/ui/Button'
 import { Menu } from '../components/ui/Menu'
 import { Modal } from '../components/ui/Modal'
+import { ShareModal } from '../components/ShareModal'
 import { ProgressBar } from '../components/ui/Progress'
 import { Segmented } from '../components/ui/Toggle'
 import {
@@ -31,6 +32,7 @@ export default function SetDetail() {
   const navigate = useNavigate()
   const [filter, setFilter] = useState<Filter>('all')
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [shareOpen, setShareOpen] = useState(false)
 
   const { value: set, loading, refresh } = useAsync(() => getSet(id), [id])
   const { value: progress, refresh: refreshProgress } = useAsync(() => loadProgress(id), [id])
@@ -76,6 +78,11 @@ export default function SetDetail() {
               </IconButton>
             )}
             items={[
+              {
+                label: 'Share as a link',
+                icon: <IconShare width={16} height={16} />,
+                onSelect: () => setShareOpen(true),
+              },
               {
                 label: 'Export as JSON',
                 icon: <IconShare width={16} height={16} />,
@@ -200,6 +207,8 @@ export default function SetDetail() {
           Edit this set
         </ButtonLink>
       </section>
+
+      <ShareModal set={set} open={shareOpen} onClose={() => setShareOpen(false)} />
 
       <Modal
         open={confirmDelete}

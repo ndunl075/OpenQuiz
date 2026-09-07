@@ -6,6 +6,7 @@ import Home from './routes/Home'
 import Library from './routes/Library'
 import EditSet from './routes/EditSet'
 import SetDetail from './routes/SetDetail'
+import SharedSet from './routes/SharedSet'
 import Flashcards from './routes/modes/Flashcards'
 import Learn from './routes/modes/Learn'
 import Write from './routes/modes/Write'
@@ -44,6 +45,7 @@ export default function App() {
         <Route path="stats" element={<Stats />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="create" element={<EditSet />} />
+        <Route path="shared" element={<SharedSet />} />
         <Route path="set/:id" element={<SetDetail />} />
         <Route path="set/:id/edit" element={<EditSet />} />
         <Route path="set/:id/flashcards" element={<Flashcards />} />
