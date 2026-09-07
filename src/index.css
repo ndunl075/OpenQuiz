@@ -146,6 +146,27 @@
     padding-right: env(safe-area-inset-right, 0px);
   }
 
+  /*
+   * Pins the light palette regardless of the viewer's theme. The landing page
+   * is a single deliberate design rather than two half-considered ones; the app
+   * behind it still follows the system or the user's choice.
+   */
+  .oq-light-only {
+    --oq-bg: var(--color-canvas);
+    --oq-surface: #ffffff;
+    --oq-surface-2: #ffffff;
+    --oq-raised: #ffffff;
+    --oq-text: var(--color-ink);
+    --oq-text-soft: var(--color-ink-soft);
+    --oq-text-faint: var(--color-ink-faint);
+    --oq-line: var(--color-line);
+    --oq-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.1);
+    --oq-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    color-scheme: light;
+    background-color: var(--oq-bg);
+    color: var(--oq-text);
+  }
+
   /* A 1rem frame that grows to clear the insets. Used by the modal overlay. */
   .oq-inset-pad {
     padding-top: max(1rem, env(safe-area-inset-top, 0px));

@@ -2,15 +2,14 @@ import clsx from 'clsx'
 import { motion, useReducedMotion } from 'motion/react'
 import type { ReactNode } from 'react'
 import { MODES } from '../components/ModeTiles'
-import { ButtonLink, IconButton, buttonClass } from '../components/ui/Button'
-import { IconArrowRight, IconCheck, IconMoon, IconSun } from '../components/ui/Icon'
-import { useSettings } from '../store/useSettings'
+import { ButtonLink, buttonClass } from '../components/ui/Button'
+import { IconArrowRight, IconCheck } from '../components/ui/Icon'
 
 const REPO_URL = 'https://github.com/ndunl075/OpenQuiz'
 const EASE = [0.2, 0.8, 0.2, 1] as const
 
-/** Indigo reads at ~3.6:1 on the navy canvas; plum is the same hue with contrast. */
-const ACCENT_TEXT = 'text-indigo-oq [[data-theme=dark]_&]:text-plum'
+/** The page is always light, so indigo has the contrast it needs throughout. */
+const ACCENT_TEXT = 'text-indigo-oq'
 
 /** Shared page gutter. oq-gutter widens to clear the notch in landscape. */
 const WRAP = 'oq-gutter mx-auto w-full max-w-[1100px]'
@@ -98,28 +97,16 @@ function Wordmark() {
 }
 
 function Header() {
-  const { settings, update } = useSettings()
-  const isDark =
-    settings.theme === 'dark' ||
-    (settings.theme === 'system' &&
-      (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false))
-
   return (
     <header className={clsx(WRAP, 'pt-safe flex h-16 items-center justify-between')}>
       <Wordmark />
-      <nav aria-label="Landing" className="flex items-center gap-1">
-        <a
-          href={REPO_URL}
-          className="rounded-lg px-3 py-2 text-sm font-semibold text-[var(--oq-text-soft)] transition-colors hover:bg-[var(--oq-surface-2)] hover:text-[var(--oq-text)]"
-        >
+      <nav aria-label="Landing" className="flex items-center gap-2">
+        <a href={REPO_URL} className={buttonClass({ variant: 'secondary', size: 'sm' })}>
           GitHub
         </a>
-        <IconButton
-          label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-          onClick={() => void update({ theme: isDark ? 'light' : 'dark' })}
-        >
-          {isDark ? <IconSun /> : <IconMoon />}
-        </IconButton>
+        <ButtonLink to="/home" size="sm">
+          Try OpenQuiz
+        </ButtonLink>
       </nav>
     </header>
   )
@@ -518,7 +505,7 @@ function HowItWorks() {
  * Closing
  * ------------------------------------------------------------------ */
 
-/** A white face on the indigo band, readable in both themes. */
+/** A white face on the indigo band. */
 const ON_INDIGO =
   'border-transparent! bg-white! text-indigo-oq! shadow-[0_4px_0_0_rgba(0,0,0,0.25)]! hover:bg-indigo-soft!'
 
@@ -594,7 +581,7 @@ function Footer() {
 
 export default function Landing() {
   return (
-    <div className="min-h-full overflow-x-hidden">
+    <div className="oq-light-only min-h-dvh overflow-x-hidden">
       <Header />
       <Hero />
       <Modes />
