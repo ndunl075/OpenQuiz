@@ -1,14 +1,17 @@
 name: Pages
 
 # Publishes the app to GitHub Pages on every push to main.
-# Needs no secrets: it builds and deploys entirely on GitHub's runners.
+#
+# One-time setup: Settings → Pages → Build and deployment → Source:
+# "GitHub Actions". Creating the Pages site needs repository-admin rights that
+# the workflow token does not carry, so until that is done this workflow skips
+# with a notice rather than failing every push.
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# Allow one deploy at a time, and let a newer push supersede a queued one.
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -21,6 +24,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.pages.outcome == 'success' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -29,15 +34,25 @@ jobs:
           node-version: 22
           cache: npm
 
-      # enablement: true turns Pages on for the repository if it is not already,
-      # so this works on a fresh repo with no manual setup.
+      # Succeeds once Pages is enabled with "GitHub Actions" as the source.
+      # Until then it cannot create the site, so let it fail softly.
       - name: Configure Pages
         id: pages
+        continue-on-error: true
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
+
+      - name: Explain a skipped deploy
+        if: steps.pages.outcome != 'success'
+        run: |
+          echo "::notice::GitHub Pages is not enabled for this repository, so nothing was deployed. Enable it under Settings → Pages → Build and deployment → Source: GitHub Actions, then re-run this workflow."
+          {
+            echo "### Pages is not enabled yet"
+            echo
+            echo "Enable it under **Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run this workflow and the app will publish."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build
+        if: steps.pages.outcome == 'success'
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}/
         run: |
@@ -46,11 +61,13 @@ jobs:
           node scripts/pages-postbuild.mjs
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.pages.outcome == 'success'
         with:
           path: dist
 
   deploy:
     needs: build
+    if: needs.build.outputs.ready == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -61,5 +78,8 @@ jobs:
 
       - name: Report the URL
         run: |
-          echo "### OpenQuiz is live" >> "$GITHUB_STEP_SUMMARY"
-          echo "${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### OpenQuiz is live"
+            echo
+            echo "${{ steps.deployment.outputs.page_url }}"
+          } >> "$GITHUB_STEP_SUMMARY"

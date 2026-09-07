@@ -85,12 +85,16 @@ export a single set on its own.
 
 To keep using it later, run `npm run dev` again and open the same address.
 
-### Or use the hosted copy
+### Or put it online for free
 
-Every push to `main` publishes to **GitHub Pages**, so there is a live copy at
-the address shown under the repository's Environments. Nothing is configured by
-hand: `.github/workflows/pages.yml` builds and deploys on GitHub's own runners,
-enabling Pages on first run.
+**GitHub Pages** is the shortest path, and it needs no accounts or tokens beyond
+this repository. Once, under **Settings → Pages → Build and deployment**, set
+**Source** to **GitHub Actions**. From then on every push to `main` publishes
+itself via `.github/workflows/pages.yml`, and the address appears on the
+workflow run and under the repository's Environments. (Creating the Pages site
+needs repository-admin rights the workflow token does not have, which is why
+that one click cannot be automated; until it happens the workflow skips with a
+notice instead of failing.)
 
 You can host it yourself just as easily — it is a static site, so **Vercel**,
 Netlify and Cloudflare Pages all work on their free tiers. Point Vercel at this
