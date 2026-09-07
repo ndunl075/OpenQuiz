@@ -23,3 +23,5 @@ jobs:
       - run: npm run test:mobile
       - run: npm run test:flows
       - run: npm run test:pages
+      - run: npm run test:modes
+      - run: npm run test:persistence

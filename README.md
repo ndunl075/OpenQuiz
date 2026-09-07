@@ -53,6 +53,13 @@ You make a set once, then practise it in whichever mode suits you.
 Everything you make is saved in your web browser on the device you're using. That's
 good for privacy: nobody else can see it, and we couldn't look at it if we wanted to.
 
+This holds however you reach OpenQuiz. Opening it at a web address changes
+nothing: the site only sends the app to your browser, and your browser does the
+saving. `npm run test:persistence` checks exactly that — it creates a set, watches
+every request the page makes, and fails if any of them carries what you typed or
+goes anywhere off-origin at all. It then restarts the browser to confirm the set
+is still there, and checks that a different browser profile cannot see it.
+
 But it also means **nothing is backed up automatically**. If you clear your
 browser history and site data, or uninstall the browser, your sets go with it.
 
@@ -161,6 +168,8 @@ npm run test:e2e     # browser journeys over the built app (Playwright)
 npm run test:mobile  # phone layout checks across five device profiles
 npm run test:flows   # longer user flows (editing, folders, export, offline)
 npm run test:pages   # the subpath build, served the way GitHub Pages serves it
+npm run test:modes   # plays every study mode and checks the answers grade right
+npm run test:persistence  # proves sets are stored on the device and never sent
 npm run lint      # oxlint, warnings are errors
 ```
 

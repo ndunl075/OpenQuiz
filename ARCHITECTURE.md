@@ -154,6 +154,8 @@ Mode routes hold **no** persistent state of their own. Refreshing mid-session re
 | `e2e/mobile.mjs` | The same flow across five phone profiles, asserting no horizontal overflow, no sub-16px fields, tappable controls and full-viewport pages. |
 | `e2e/flows.mjs` | Longer journeys: editing a saved set, folders, a full Learn round, export/import, history, keyboard. |
 | `e2e/pages.mjs` | The subpath build, served the way GitHub Pages serves it, including a deep link resolved through `404.html`. |
+| `e2e/modes.mjs` | Plays all seven modes: correct answers count, wrong ones reveal the right answer, scores and mastery move. |
+| `e2e/persistence.mjs` | Proves storage is device-local: no request carries user content, data survives a real browser restart, and a second profile sees nothing. |
 
 Unit tests cannot see a stylesheet that does not apply or a route that mounts
 twice, so the e2e journey is not optional — it is the layer that catches those.
