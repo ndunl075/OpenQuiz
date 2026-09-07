@@ -145,14 +145,18 @@ npm run dev       # dev server on http://localhost:5173
 
 npm run build     # type-check + production bundle
 npm test          # 127 unit tests (Vitest)
-npm run test:e2e  # 14 browser journeys over the built app (Playwright)
+npm run test:e2e     # browser journeys over the built app (Playwright)
+npm run test:mobile  # phone layout checks across five device profiles
 npm run lint      # oxlint, warnings are errors
 ```
 
 `test:e2e` serves the production build and drives real Chromium through creating
-a set and visiting every study mode, failing on any console or page error. It
-needs a browser once: `npx playwright install chromium`. All four commands gate
-every pull request in CI.
+a set and visiting every study mode, failing on any console or page error.
+`test:mobile` replays that across iPhone SE / 12 / 14 Pro Max, an iPhone in
+landscape and a Pixel 5, asserting no horizontal overflow, no sub-16px fields
+(iOS zooms in on those and never back out), tappable controls, and that pages
+fill the viewport under a collapsing Safari toolbar. Both need a browser once:
+`npx playwright install chromium`. All of it gates every pull request in CI.
 
 The production build is a static site — drop `dist/` on any static host, or
 install it as a PWA and use it offline. `vercel.json` sets the build and, more

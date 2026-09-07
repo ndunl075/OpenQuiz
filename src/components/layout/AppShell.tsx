@@ -63,5 +63,7 @@ export function Page({
   width?: string
   className?: string
 }) {
-  return <div className={`mx-auto w-full ${width} px-4 py-8 sm:px-6 ${className}`}>{children}</div>
+  return (
+    <div className={`oq-gutter mx-auto w-full ${width} py-8 ${className}`}>{children}</div>
+  )
 }

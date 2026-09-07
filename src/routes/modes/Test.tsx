@@ -324,7 +324,7 @@ function QuestionCard({
                   value={matches[`${question.id}:${prompt.id}`] ?? ''}
                   onChange={(e) => onMatch(prompt.id, e.target.value)}
                   aria-label={`Answer for ${sideText(prompt, question.promptSide)}`}
-                  className="rounded-lg border border-[var(--oq-line)] bg-[var(--oq-surface)] px-3 py-2.5 text-sm"
+                  className="rounded-lg border border-[var(--oq-line)] bg-[var(--oq-surface)] px-3 py-2.5 text-base pointer-fine:text-sm"
                 >
                   <option value="">Choose…</option>
                   {question.answers.map((answer) => (

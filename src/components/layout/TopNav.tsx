@@ -49,7 +49,7 @@ export function TopNav() {
   const isDark = document.documentElement.dataset.theme === 'dark'
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[var(--oq-line)] bg-[var(--oq-surface)]">
+    <header className="sticky top-0 z-30 border-b border-[var(--oq-line)] bg-[var(--oq-surface)] pt-safe px-safe">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-4 px-4 sm:px-6">
         <Logo />
 
@@ -87,7 +87,7 @@ export function TopNav() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search your sets"
             aria-label="Search your sets"
-            className="h-11 w-full rounded-full border border-transparent bg-[var(--oq-surface-2)] pl-11 pr-4 text-sm outline-none transition-colors focus:border-indigo-oq focus:bg-[var(--oq-surface)]"
+            className="h-11 w-full rounded-full border border-transparent bg-[var(--oq-surface-2)] pl-11 pr-4 text-base outline-none transition-colors focus:border-indigo-oq focus:bg-[var(--oq-surface)] pointer-fine:text-sm"
             style={{ backgroundColor: 'var(--oq-bg)' }}
           />
         </form>

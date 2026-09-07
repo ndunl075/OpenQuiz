@@ -105,14 +105,16 @@ export default function Stats() {
         Across {pluralize(rows.length, 'set')} on this device.
       </p>
 
-      <section className="mt-8 flex flex-wrap items-center gap-8">
+      {/* The ring is a fixed 140px; below ~380px the tiles would be squeezed to
+          nothing beside it, so stack them until there is room for a row. */}
+      <section className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:gap-8">
         <ProgressRing value={totals.percent} size={140}>
           <div className="text-center">
             <p className="text-3xl font-extrabold">{totals.percent}%</p>
             <p className="text-[11px] font-semibold text-[var(--oq-text-faint)]">mastered</p>
           </div>
         </ProgressRing>
-        <div className="grid min-w-0 flex-1 grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="grid w-full grid-cols-2 gap-3 sm:min-w-0 sm:flex-1 sm:grid-cols-4">
           <StatTile label="Terms" value={String(totals.terms)} />
           <StatTile label="Mastered" value={String(totals.mastered)} />
           <StatTile label="Still learning" value={String(totals.learning)} />

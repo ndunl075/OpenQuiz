@@ -186,7 +186,7 @@ export default function SetDetail() {
               await moveSetToFolder(set.id, e.target.value || undefined)
               refresh()
             }}
-            className="ml-2 rounded-md border border-[var(--oq-line)] bg-[var(--oq-surface)] px-2 py-1 text-xs font-semibold text-[var(--oq-text)]"
+            className="ml-2 rounded-md border border-[var(--oq-line)] bg-[var(--oq-surface)] px-2 py-1 text-base font-semibold text-[var(--oq-text)] pointer-fine:text-xs"
           >
             <option value="">No folder</option>
             {folders.map((folder) => (

@@ -150,7 +150,8 @@ Mode routes hold **no** persistent state of their own. Refreshing mid-session re
 | `lib/*` | Grading, scheduler, test generator, import parser, backup, shuffle — pure-function unit tests. |
 | Stores | Dexie CRUD against `fake-indexeddb`. |
 | Components | Render + interaction for each mode's core loop via Testing Library. |
-| `e2e/` | Playwright drives the built app: create a set, visit all seven modes, fail on any console or page error. |
+| `e2e/journey.mjs` | Playwright drives the built app: create a set, visit all seven modes, fail on any console or page error. |
+| `e2e/mobile.mjs` | The same flow across five phone profiles, asserting no horizontal overflow, no sub-16px fields, tappable controls and full-viewport pages. |
 
 Unit tests cannot see a stylesheet that does not apply or a route that mounts
 twice, so the e2e journey is not optional — it is the layer that catches those.
@@ -161,7 +162,19 @@ four gate every PR.
 
 ---
 
-## 11. Landing vs app
+## 11. Phones and iOS
+
+Handled centrally rather than per screen:
+
+- **`dvh`, not `vh`.** Safari's toolbar collapses on scroll, so `100vh` overshoots and clips the bottom of a study mode. Every full-height surface uses `dvh`.
+- **16px fields on touch devices.** iOS zooms the page in when a focused field renders below 16px, and never zooms back out. Fields are 16px and drop to the design size under `pointer-fine:` — keyed on pointer type, not width, because an iPhone in landscape is wider than the `sm` breakpoint and still does it.
+- **Safe areas.** `viewport-fit=cover` plus `pt-safe` / `pb-safe` / `px-safe` utilities and an inset-aware `.oq-gutter`, so chrome clears the notch, the home indicator and the landscape rounded corners.
+- **Dialogs are capped** to `calc(100dvh - 2rem)` with a scrolling body and pinned footer; a tall dialog used to push its confirm button off a phone screen entirely.
+- 44px minimum hit areas under `@media (pointer: coarse)`, no tap highlight, and no Safari landscape text inflation.
+
+---
+
+## 12. Landing vs app
 
 `/` renders `LandingGate`. With no sets on the device it shows `Landing`, the
 marketing page; once the device has sets it redirects to `/home`, so a returning
@@ -174,7 +187,7 @@ to an empty library and stats.
 
 ---
 
-## 12. Route transitions
+## 13. Route transitions
 
 `AppShell` animates between pages with `AnimatePresence mode="wait"`, which
 keeps the outgoing page mounted while it animates out. `useOutlet()` returns the

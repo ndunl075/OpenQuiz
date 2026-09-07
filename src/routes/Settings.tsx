@@ -141,7 +141,7 @@ export default function SettingsPage() {
               accept="application/json,.json"
               aria-label="Backup file"
               onChange={(e) => void onFile(e.target.files?.[0])}
-              className="max-w-[220px] text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-soft file:px-3 file:py-2 file:text-xs file:font-semibold file:text-indigo-oq"
+              className="max-w-[220px] text-base file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-soft file:px-3 file:py-2 file:text-xs file:font-semibold file:text-indigo-oq pointer-fine:text-xs"
             />
           </div>
 
