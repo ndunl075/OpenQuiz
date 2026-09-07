@@ -41,13 +41,19 @@ const TERMS = [
 
 let setUrl = ''
 
-await step('home renders the first-run hero', async () => {
+await step('a first-time visitor lands on the pitch', async () => {
   await page.goto(BASE, { waitUntil: 'networkidle' })
-  await page.getByRole('heading', { name: /every study mode/i }).waitFor({ timeout: 10000 })
+  await page.getByRole('link', { name: 'Try OpenQuiz' }).first().waitFor({ timeout: 10000 })
+})
+
+await step('Try OpenQuiz opens the app', async () => {
+  await page.getByRole('link', { name: 'Try OpenQuiz' }).first().click()
+  await page.waitForURL('**/home', { timeout: 10000 })
+  await page.getByRole('link', { name: /new set/i }).waitFor({ timeout: 5000 })
 })
 
 await step('a set can be created by pasting terms', async () => {
-  await page.getByRole('link', { name: /create your first set/i }).click()
+  await page.getByRole('link', { name: /create a set/i }).click()
   await page.getByLabel('Set title').fill('Cell Biology')
   await page.getByLabel('Set description').fill('Organelles and what they do')
   await page.getByRole('button', { name: 'Import' }).click()
@@ -118,6 +124,11 @@ await step('gravity drops a term', async () => {
   await page.goto(`${setUrl}/gravity`, { waitUntil: 'networkidle' })
   await page.getByRole('button', { name: 'Start game' }).click()
   await page.getByTestId('falling-prompt').waitFor({ timeout: 5000 })
+})
+
+await step('a returning visitor skips the pitch', async () => {
+  await page.goto(BASE, { waitUntil: 'networkidle' })
+  await page.waitForURL('**/home', { timeout: 10000 })
 })
 
 await step('stats reports the set', async () => {

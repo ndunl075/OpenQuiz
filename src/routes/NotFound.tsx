@@ -9,7 +9,7 @@ export default function NotFound() {
       <p className="mt-2 text-sm text-[var(--oq-text-soft)]">
         The set may have been deleted from this device.
       </p>
-      <ButtonLink to="/" className="mt-8">
+      <ButtonLink to="/home" className="mt-8">
         Back home
       </ButtonLink>
     </Page>

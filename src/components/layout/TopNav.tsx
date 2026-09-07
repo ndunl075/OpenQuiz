@@ -7,7 +7,7 @@ import { useSettings } from '../../store/useSettings'
 
 function Logo() {
   return (
-    <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="OpenQuiz home">
+    <Link to="/home" className="flex shrink-0 items-center gap-2" aria-label="OpenQuiz home">
       <span className="grid h-8 w-8 place-items-center rounded-lg bg-indigo-oq text-white">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
@@ -24,7 +24,7 @@ function Logo() {
 }
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Home', end: true },
+  { to: '/home', label: 'Home', end: true },
   { to: '/library', label: 'Your library', end: false },
   { to: '/stats', label: 'Stats', end: false },
 ]
