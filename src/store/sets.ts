@@ -1,6 +1,7 @@
 import { db } from '../lib/db'
 import { newId } from '../lib/id'
 import { requestPersistentStorage } from '../lib/storage'
+import { scheduleBackup } from '../lib/folderBackup'
 import type { Folder, SetId, StudySet, Term, TermId } from '../lib/types'
 
 export function blankTerm(): Term {
@@ -42,6 +43,7 @@ export async function saveSet(set: StudySet): Promise<StudySet> {
   // here rather than on load so a first-time visitor is never prompted for
   // storage they have not used yet. Declining is fine; the set is still saved.
   void requestPersistentStorage()
+  scheduleBackup()
   return clean
 }
 
@@ -51,6 +53,7 @@ export async function deleteSet(id: SetId): Promise<void> {
     await db.progress.where('setId').equals(id).delete()
     await db.modeStats.where('setId').equals(id).delete()
   })
+  scheduleBackup()
 }
 
 export async function duplicateSet(id: SetId): Promise<StudySet | undefined> {
