@@ -40,7 +40,7 @@ const VARIANTS: Record<ButtonVariant, string> = {
 }
 
 const BASE =
-  'inline-flex items-center justify-center rounded-lg font-semibold select-none ' +
+  'touch-target inline-flex items-center justify-center rounded-lg font-semibold select-none ' +
   'transition-[background-color,transform,box-shadow,filter] duration-100 ' +
   'disabled:opacity-45 disabled:pointer-events-none whitespace-nowrap'
 
@@ -123,6 +123,9 @@ export function IconButton({
       className={clsx(
         'touch-target inline-flex items-center justify-center rounded-full transition-colors duration-100',
         'text-[var(--oq-text-soft)] hover:bg-[var(--oq-surface-2)] hover:text-[var(--oq-text)]',
+        // The tap highlight is suppressed globally, so press feedback has to be
+        // explicit or a tap on a phone looks like nothing happened.
+        'active:bg-[var(--oq-line)] active:text-[var(--oq-text)]',
         'disabled:opacity-40 disabled:pointer-events-none',
         size === 'sm' ? 'h-8 w-8' : 'h-10 w-10',
         active && 'text-indigo-oq',

@@ -54,7 +54,15 @@ export function RoundSummary({
         </div>
       </div>
 
-      <Button size="lg" block className="mt-8" onClick={onContinue}>
+      {/* Distinct from the per-question Continue, which reads identically to a
+          screen reader while meaning something different. */}
+      <Button
+        size="lg"
+        block
+        className="mt-8"
+        aria-label="Continue to the next round"
+        onClick={onContinue}
+      >
         Continue
       </Button>
     </motion.div>

@@ -44,7 +44,9 @@ async function checkNoOverflow(page, profile, where) {
       )
     // A scrolling element that is itself in-bounds can still push the page wide.
     const scrollers = [...document.querySelectorAll('body *')]
-      .filter((el) => el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflowX === 'visible')
+      // Deliberately does NOT skip clipped containers: clipping hides content
+      // that is genuinely too wide, which is exactly what this should catch.
+      .filter((el) => el.scrollWidth > el.clientWidth + 1)
       .slice(0, 3)
       .map((el) => `scrollWidth <${el.tagName.toLowerCase()} class="${String(el.className).slice(0, 60)}"> ${el.scrollWidth}>${el.clientWidth}`)
     widest.push(...scrollers)
@@ -67,6 +69,10 @@ async function checkNoZoomOnFocus(page, profile, where) {
   const small = await page.evaluate(() =>
     [...document.querySelectorAll('input, select, textarea')]
       .filter((el) => {
+        // Only editable text fields trigger the zoom; a file picker, range or
+        // checkbox never receives text input.
+        const exempt = ['file', 'range', 'checkbox', 'radio', 'color', 'submit', 'button']
+        if (el.tagName === 'INPUT' && exempt.includes(el.type)) return false
         const style = getComputedStyle(el)
         return style.display !== 'none' && parseFloat(style.fontSize) < 16
       })
@@ -86,7 +92,11 @@ async function checkTapTargets(page, profile, where) {
     [...document.querySelectorAll('button, a[href]')]
       .filter((el) => {
         const r = el.getBoundingClientRect()
-        return r.width > 0 && r.height > 0 && r.height < 32 && r.width < 32
+        // 44px is the platform guidance; flag anything that misses it in
+        // either direction once the control is not an inline run of text.
+        const isInlineText = (el.textContent ?? '').trim().length > 0 && el.tagName === 'A'
+        if (isInlineText) return false
+        return r.width > 0 && r.height > 0 && (r.height < 44 || r.width < 44)
       })
       .map((el) => {
         const r = el.getBoundingClientRect()
@@ -108,6 +118,39 @@ async function checkFillsViewport(page, profile, where) {
   }))
   if (result.height < result.inner - 2) {
     note(profile, `${where} leaves ${result.inner - result.height}px of dead space below the fold`)
+  }
+}
+
+/**
+ * An open dialog must sit entirely inside the viewport, footer included.
+ * Regression: the overlay's safe-area padding once replaced its 1rem frame
+ * rather than adding to it, leaving the dialog flush against both edges.
+ */
+async function checkDialogFits(page, profile, where) {
+  const box = await page.evaluate(() => {
+    const dialog = document.querySelector('[role="dialog"]')
+    if (!dialog) return null
+    const r = dialog.getBoundingClientRect()
+    const footer = dialog.querySelector('footer')
+    return {
+      top: Math.round(r.top),
+      bottom: Math.round(r.bottom),
+      left: Math.round(r.left),
+      right: Math.round(r.right),
+      footerBottom: footer ? Math.round(footer.getBoundingClientRect().bottom) : null,
+      vh: window.innerHeight,
+      vw: window.innerWidth,
+    }
+  })
+  if (!box) {
+    note(profile, `${where}: expected an open dialog`)
+    return
+  }
+  if (box.top < 0 || box.bottom > box.vh || box.left < 0 || box.right > box.vw) {
+    note(profile, `${where}: dialog escapes the viewport (${JSON.stringify(box)})`)
+  }
+  if (box.footerBottom !== null && box.footerBottom > box.vh) {
+    note(profile, `${where}: dialog footer is below the fold (${box.footerBottom} > ${box.vh})`)
   }
 }
 
@@ -145,6 +188,7 @@ for (const [profile, device] of PROFILES) {
     )
   await checkNoOverflow(page, profile, 'import dialog')
   await checkNoZoomOnFocus(page, profile, 'import dialog')
+  await checkDialogFits(page, profile, 'import dialog')
   await page.getByRole('button', { name: /import 6 terms/i }).click()
   await page.getByRole('button', { name: 'Create set' }).click()
   await page.getByRole('heading', { name: 'Cell Biology' }).waitFor({ timeout: 10000 })

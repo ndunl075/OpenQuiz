@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "preview": "vite preview",
     "test:e2e": "node e2e/run.mjs",
-    "test:mobile": "node e2e/run.mjs mobile"
+    "test:mobile": "node e2e/run.mjs mobile",
+    "test:flows": "node e2e/run.mjs flows"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",

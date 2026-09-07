@@ -32,7 +32,7 @@ export function ModeChrome({
   const navigate = useNavigate()
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[var(--oq-bg)]">
+    <div className="flex min-h-screen min-h-dvh flex-col bg-[var(--oq-bg)]">
       <header className="sticky top-0 z-20 bg-[var(--oq-bg)]/90 backdrop-blur pt-safe px-safe">
         <div className="mx-auto flex h-16 max-w-[1100px] items-center gap-4 px-4 sm:px-6">
           <div className="min-w-0">
@@ -69,19 +69,19 @@ export function ModeChrome({
           />
         )}
       </header>
-      <div className="flex flex-1 flex-col overflow-x-hidden px-safe pb-safe">{children}</div>
+      <div className="clip-x flex flex-1 flex-col px-safe pb-safe">{children}</div>
     </div>
   )
 }
 
 export function ModeLoading() {
-  return <div className="min-h-dvh bg-[var(--oq-bg)]" />
+  return <div className="min-h-screen min-h-dvh bg-[var(--oq-bg)]" />
 }
 
 export function NotEnoughTerms({ setId, need }: { setId: string; need: number }) {
   const navigate = useNavigate()
   return (
-    <div className="grid min-h-dvh place-items-center bg-[var(--oq-bg)] px-6 text-center">
+    <div className="grid min-h-screen min-h-dvh place-items-center bg-[var(--oq-bg)] px-6 text-center">
       <div>
         <p className="text-xl font-bold">This mode needs at least {need} terms</p>
         <p className="mt-2 text-sm text-[var(--oq-text-soft)]">

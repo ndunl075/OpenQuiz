@@ -50,7 +50,7 @@ function Radios<T extends string>({
             onClick={() => onChange(choice.value)}
             aria-pressed={value === choice.value}
             className={
-              'rounded-lg border px-3 py-1.5 text-[13px] font-semibold transition-colors ' +
+              'touch-target rounded-lg border px-3 py-1.5 text-[13px] font-semibold transition-colors active:bg-[var(--oq-surface-2)] ' +
               (value === choice.value
                 ? 'border-indigo-oq bg-indigo-soft text-indigo-oq'
                 : 'border-[var(--oq-line)] text-[var(--oq-text-soft)] hover:text-[var(--oq-text)]')
@@ -112,7 +112,7 @@ export function ImportModal({
         onChange={(e) => setText(e.target.value)}
         placeholder={'Word 1\tDefinition 1\nWord 2\tDefinition 2'}
         aria-label="Terms to import"
-        className="font-mono text-base pointer-fine:text-[13px]"
+        className="font-mono"
       />
 
       <div className="mt-5 grid gap-5 sm:grid-cols-2">
@@ -155,7 +155,7 @@ export function ImportModal({
           <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-[var(--oq-text-faint)]">
             Preview
           </p>
-          <div className="max-h-52 overflow-y-auto rounded-lg border border-[var(--oq-line)]">
+          <div className="rounded-lg border border-[var(--oq-line)]">
             {preview.slice(0, 40).map((term, i) => (
               <div
                 key={term.id}

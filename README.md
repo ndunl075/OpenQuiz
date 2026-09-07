@@ -92,6 +92,11 @@ host OpenQuiz on **Vercel** (or Netlify, Cloudflare Pages, GitHub Pages) at no
 cost. Point Vercel at this repository and it will build and publish it — the
 settings it needs are already in `vercel.json`, so there's nothing to configure.
 
+To have every push deploy itself instead, add three repository secrets —
+`VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` — and the included
+`.github/workflows/deploy.yml` takes over. Without them it quietly skips, so it
+never breaks a build.
+
 Visitors get a landing page explaining what OpenQuiz is, with a **Try OpenQuiz**
 button that opens the app. Anyone who has already made a set skips the landing
 page and goes straight to their library.
@@ -147,6 +152,7 @@ npm run build     # type-check + production bundle
 npm test          # 127 unit tests (Vitest)
 npm run test:e2e     # browser journeys over the built app (Playwright)
 npm run test:mobile  # phone layout checks across five device profiles
+npm run test:flows   # longer user flows (editing, folders, export, offline)
 npm run lint      # oxlint, warnings are errors
 ```
 
