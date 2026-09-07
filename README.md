@@ -23,15 +23,15 @@ It's the same idea as Quizlet or Anki, with two differences:
 
 You make a set once, then practise it in whichever mode suits you.
 
-| | What it's like |
+| Mode | What it's like |
 |---|---|
-| 🃏 **Flashcards** | Classic cards you flip over. Sort them into "I know this" and "still learning" as you go. |
-| 🧠 **Learn** | The app works out what you don't know and keeps bringing it back. It starts you on multiple choice, then makes you type the answer once you've got the hang of it. |
-| ✍️ **Write** | Type every answer from memory. Get one wrong and it makes you write the correct answer out once before moving on. |
-| 🔊 **Spell** | The app reads a word aloud and you type what you hear. Handy for languages. It shows you exactly which letters you got wrong. |
-| 📝 **Test** | A practice exam. Choose how many questions and what kind — typed answers, multiple choice, true/false, matching — then get a score and see what you missed. |
-| 🎯 **Match** | A timed game. Pair each term with its definition as fast as you can and beat your own record. |
-| ☄️ **Gravity** | Words fall down the screen and you type the answer before they land. Three lives, and it speeds up as you go. |
+| **Flashcards** | Classic cards you flip over. Sort them into "I know this" and "still learning" as you go. |
+| **Learn** | The app works out what you don't know and keeps bringing it back. It starts you on multiple choice, then makes you type the answer once you've got the hang of it. |
+| **Write** | Type every answer from memory. Get one wrong and it makes you write the correct answer out once before moving on. |
+| **Spell** | The app reads a word aloud and you type what you hear. Handy for languages. It shows you exactly which letters you got wrong. |
+| **Test** | A practice exam. Choose how many questions and what kind — typed answers, multiple choice, true/false, matching — then get a score and see what you missed. |
+| **Match** | A timed game. Pair each term with its definition as fast as you can and beat your own record. |
+| **Gravity** | Words fall down the screen and you type the answer before they land. Three lives, and it speeds up as you go. |
 
 ## What else it does
 
