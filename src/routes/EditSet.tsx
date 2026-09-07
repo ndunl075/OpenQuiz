@@ -25,7 +25,7 @@ function LanguageSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-md border border-[var(--oq-line)] bg-[var(--oq-surface)] px-2 py-1 text-xs font-semibold text-[var(--oq-text)]"
+        className="rounded-md border border-[var(--oq-line)] bg-[var(--oq-surface)] px-2 py-1 text-base font-semibold text-[var(--oq-text)] pointer-fine:text-xs"
       >
         {LANGUAGES.map((lang) => (
           <option key={lang.code} value={lang.code}>

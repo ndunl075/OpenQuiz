@@ -32,7 +32,7 @@ export function Modal({ open, onClose, title, children, footer, width = 'max-w-l
   return createPortal(
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pt-safe pb-safe">
           <motion.div
             className="absolute inset-0 bg-black/45"
             initial={{ opacity: 0 }}
@@ -45,23 +45,29 @@ export function Modal({ open, onClose, title, children, footer, width = 'max-w-l
             role="dialog"
             aria-modal="true"
             aria-label={title}
-            className={`relative w-full ${width} oq-card oq-shadow-lg overflow-hidden`}
+            /*
+             * Cap the dialog to the viewport and scroll the body, not the
+             * page: a tall dialog (the import preview, say) used to run past
+             * the bottom of a phone screen and take its footer buttons with
+             * it, leaving no way to confirm.
+             */
+            className={`relative flex max-h-[calc(100dvh-2rem)] w-full ${width} flex-col oq-card oq-shadow-lg overflow-hidden`}
             initial={{ opacity: 0, y: 16, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 420, damping: 32 }}
           >
             {title && (
-              <header className="flex items-center justify-between border-b border-[var(--oq-line)] px-6 py-4">
+              <header className="flex shrink-0 items-center justify-between border-b border-[var(--oq-line)] px-6 py-4">
                 <h2 className="text-lg font-bold">{title}</h2>
                 <IconButton label="Close" onClick={onClose}>
                   <IconClose />
                 </IconButton>
               </header>
             )}
-            <div className="px-6 py-5">{children}</div>
+            <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">{children}</div>
             {footer && (
-              <footer className="flex justify-end gap-3 border-t border-[var(--oq-line)] px-6 py-4">
+              <footer className="flex shrink-0 flex-wrap justify-end gap-3 border-t border-[var(--oq-line)] px-6 py-4">
                 {footer}
               </footer>
             )}

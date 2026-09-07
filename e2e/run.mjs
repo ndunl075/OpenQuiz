@@ -1,4 +1,8 @@
-/** Serves the production build, runs the journey, then shuts the server down. */
+/**
+ * Serves the production build, runs a browser suite against it, then shuts the
+ * server down. `node e2e/run.mjs` runs the journey; `mobile` runs the phone
+ * layout checks.
+ */
 import { spawn } from 'node:child_process'
 import { setTimeout as sleep } from 'node:timers/promises'
 
@@ -27,7 +31,8 @@ async function waitForServer(timeoutMs = 30000) {
 let code = 1
 try {
   await waitForServer()
-  const journey = spawn('node', ['e2e/journey.mjs'], {
+  const script = process.argv[2] === 'mobile' ? 'e2e/mobile.mjs' : 'e2e/journey.mjs'
+  const journey = spawn('node', [script], {
     stdio: 'inherit',
     env: { ...process.env, BASE_URL: BASE },
   })

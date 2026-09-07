@@ -2,7 +2,11 @@ import clsx from 'clsx'
 import type { InputHTMLAttributes, TextareaHTMLAttributes } from 'react'
 
 const FIELD =
-  'w-full rounded-lg bg-[var(--oq-surface)] px-4 py-3 text-sm text-[var(--oq-text)] ' +
+  'w-full rounded-lg bg-[var(--oq-surface)] px-4 py-3 text-[var(--oq-text)] ' +
+  // 16px on touch devices: iOS zooms in on a focused field below that and
+  // never zooms back out. Keyed on pointer type, not width, because an iPhone
+  // in landscape is wider than the sm breakpoint and still does it.
+  'text-base pointer-fine:text-sm ' +
   'border border-[var(--oq-line)] placeholder:text-[var(--oq-text-faint)] ' +
   'transition-colors focus:border-indigo-oq focus:outline-none ' +
   'focus:ring-2 focus:ring-indigo-oq/25'

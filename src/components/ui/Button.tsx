@@ -121,7 +121,7 @@ export function IconButton({
       aria-label={label}
       title={label}
       className={clsx(
-        'inline-flex items-center justify-center rounded-full transition-colors duration-100',
+        'touch-target inline-flex items-center justify-center rounded-full transition-colors duration-100',
         'text-[var(--oq-text-soft)] hover:bg-[var(--oq-surface-2)] hover:text-[var(--oq-text)]',
         'disabled:opacity-40 disabled:pointer-events-none',
         size === 'sm' ? 'h-8 w-8' : 'h-10 w-10',

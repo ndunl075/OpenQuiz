@@ -112,7 +112,7 @@ export function ImportModal({
         onChange={(e) => setText(e.target.value)}
         placeholder={'Word 1\tDefinition 1\nWord 2\tDefinition 2'}
         aria-label="Terms to import"
-        className="font-mono text-[13px]"
+        className="font-mono text-base pointer-fine:text-[13px]"
       />
 
       <div className="mt-5 grid gap-5 sm:grid-cols-2">
