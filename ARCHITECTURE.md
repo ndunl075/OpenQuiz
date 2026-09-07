@@ -166,7 +166,23 @@ four gate every PR.
 
 ---
 
-## 11. Hosting
+## 11. Storage durability
+
+IndexedDB is per-origin *and per-browser profile*: every tab and window of one
+browser shares a library, while a different browser on the same device is a
+separate one. `lib/storage.ts` calls `navigator.storage.persist()` the first
+time a set is saved — not on load, so a first-time visitor is never prompted for
+storage they have not used — which asks the browser to exempt the origin from
+routine eviction. Settings reports the answer rather than assuming it.
+
+Two eviction paths remain outside the app's control, so it names them instead of
+implying durability it cannot provide: clearing browsing data, and iOS deleting
+script-writable storage after seven days without a visit — which only installing
+to the Home Screen avoids. Both are why export exists and why Settings pushes it.
+
+---
+
+## 12. Hosting
 
 The app is a static bundle, so `base` is the only thing that varies between
 hosts. `BASE_PATH` sets it at build time; the router basename
@@ -180,7 +196,7 @@ router takes over. Vercel does the same job with the rewrite in `vercel.json`.
 
 ---
 
-## 12. Phones and iOS
+## 13. Phones and iOS
 
 Handled centrally rather than per screen:
 
@@ -192,7 +208,7 @@ Handled centrally rather than per screen:
 
 ---
 
-## 13. Landing vs app
+## 14. Landing vs app
 
 `/` renders `LandingGate`. With no sets on the device it shows `Landing`, the
 marketing page; once the device has sets it redirects to `/home`, so a returning
@@ -205,7 +221,7 @@ to an empty library and stats.
 
 ---
 
-## 14. Route transitions
+## 15. Route transitions
 
 `AppShell` animates between pages with `AnimatePresence mode="wait"`, which
 keeps the outgoing page mounted while it animates out. `useOutlet()` returns the
