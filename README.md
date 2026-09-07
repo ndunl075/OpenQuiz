@@ -85,17 +85,20 @@ export a single set on its own.
 
 To keep using it later, run `npm run dev` again and open the same address.
 
-### Or put it online for free
+### Or use the hosted copy
 
-If you'd rather have a normal web address you can open on any device, you can
-host OpenQuiz on **Vercel** (or Netlify, Cloudflare Pages, GitHub Pages) at no
-cost. Point Vercel at this repository and it will build and publish it — the
-settings it needs are already in `vercel.json`, so there's nothing to configure.
+Every push to `main` publishes to **GitHub Pages**, so there is a live copy at
+the address shown under the repository's Environments. Nothing is configured by
+hand: `.github/workflows/pages.yml` builds and deploys on GitHub's own runners,
+enabling Pages on first run.
 
-To have every push deploy itself instead, add three repository secrets —
-`VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` — and the included
-`.github/workflows/deploy.yml` takes over. Without them it quietly skips, so it
-never breaks a build.
+You can host it yourself just as easily — it is a static site, so **Vercel**,
+Netlify and Cloudflare Pages all work on their free tiers. Point Vercel at this
+repository and it will build and publish it; `vercel.json` already has the
+settings, including the rewrite a single-page app needs. To have pushes deploy
+there automatically, add `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`
+as repository secrets and `.github/workflows/deploy.yml` takes over. Without
+them it quietly skips rather than failing the build.
 
 Visitors get a landing page explaining what OpenQuiz is, with a **Try OpenQuiz**
 button that opens the app. Anyone who has already made a set skips the landing
@@ -153,6 +156,7 @@ npm test          # 127 unit tests (Vitest)
 npm run test:e2e     # browser journeys over the built app (Playwright)
 npm run test:mobile  # phone layout checks across five device profiles
 npm run test:flows   # longer user flows (editing, folders, export, offline)
+npm run test:pages   # the subpath build, served the way GitHub Pages serves it
 npm run lint      # oxlint, warnings are errors
 ```
 

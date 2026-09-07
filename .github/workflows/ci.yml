@@ -22,3 +22,4 @@ jobs:
       - run: npm run test:e2e
       - run: npm run test:mobile
       - run: npm run test:flows
+      - run: npm run test:pages
