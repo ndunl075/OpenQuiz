@@ -41,11 +41,20 @@ function fromBase64Url(value: string): Uint8Array {
   return Uint8Array.from(binary, (char) => char.charCodeAt(0))
 }
 
-/** Fed through the stream's writer rather than a Blob, which jsdom cannot stream. */
+/**
+ * Fed through the stream's writer rather than a Blob, which jsdom cannot
+ * stream.
+ *
+ * Both writer promises are caught rather than left floating. A damaged link is
+ * an expected input, and decompressing one rejects on the writer as well as on
+ * the read — unhandled, that surfaces as an unhandled rejection in the console
+ * instead of the error message the caller is ready to show.
+ */
 async function pipe(bytes: Uint8Array, transform: TransformStream): Promise<Response> {
   const writer = transform.writable.getWriter()
-  void writer.write(bytes)
-  void writer.close()
+  const ignore = () => {}
+  writer.write(bytes).catch(ignore)
+  writer.close().catch(ignore)
   return new Response(transform.readable)
 }
 

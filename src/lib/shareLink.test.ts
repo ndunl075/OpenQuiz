@@ -111,6 +111,30 @@ describe('decodeSet rejections', () => {
     const result = await decodeSet(fragment.slice(0, Math.floor(fragment.length / 2)))
     expect(result.ok).toBe(false)
   })
+
+  it('leaves no unhandled rejection behind when decompression fails', async () => {
+    // The decompression stream rejects on the writer as well as the reader.
+    // Vitest fails the run on an unhandled rejection, so this pins the catch.
+    // Reached through globalThis so the app's tsconfig needs no Node types.
+    const node = globalThis as unknown as {
+      process?: {
+        on: (event: string, listener: (reason: unknown) => void) => void
+        off: (event: string, listener: (reason: unknown) => void) => void
+      }
+    }
+    const rejections: unknown[] = []
+    const onRejection = (reason: unknown) => rejections.push(reason)
+    node.process?.on('unhandledRejection', onRejection)
+
+    const fragment = await encodeSet(set())
+    for (const cut of [4, 12, 30]) {
+      expect((await decodeSet(fragment.slice(0, cut))).ok).toBe(false)
+    }
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
+    node.process?.off('unhandledRejection', onRejection)
+    expect(rejections).toEqual([])
+  })
 })
 
 describe('payloadToSet', () => {
