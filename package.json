@@ -15,7 +15,8 @@
     "test:flows": "node e2e/run.mjs flows",
     "test:pages": "node e2e/run-pages.mjs",
     "test:persistence": "node e2e/run.mjs persistence",
-    "test:modes": "node e2e/run.mjs modes"
+    "test:modes": "node e2e/run.mjs modes",
+    "test:share": "node e2e/run.mjs share"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",

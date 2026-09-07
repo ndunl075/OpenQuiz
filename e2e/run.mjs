@@ -53,6 +53,7 @@ try {
     flows: 'e2e/flows.mjs',
     persistence: 'e2e/persistence.mjs',
     modes: 'e2e/modes.mjs',
+    share: 'e2e/share.mjs',
   }
   const script = suites[process.argv[2]] ?? 'e2e/journey.mjs'
   const journey = spawn('node', [script], {

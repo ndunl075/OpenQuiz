@@ -139,7 +139,13 @@ Mode routes hold **no** persistent state of their own. Refreshing mid-session re
 
 - **Import:** paste text, choose term/def separator (tab, comma, custom) and row separator (newline, semicolon, custom); live preview table.
 - **Export:** single set or full library → `.json` (round-trippable) or `.csv`.
-- Backup/restore of the entire IndexedDB in Settings.
+- Backup/restore of the entire IndexedDB in Settings, and an optional folder
+  that receives a copy on every change (see §11).
+- **Share links** (`lib/shareLink.ts`): a set is gzipped, base64url-encoded and
+  put in the URL *fragment*, which browsers never transmit — so a set reaches
+  another device with no server, no account and no file, and the host of the app
+  never sees its contents. `/shared` previews before saving, because opening a
+  link should not silently add to someone's library.
 
 ---
 
