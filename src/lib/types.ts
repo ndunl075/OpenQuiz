@@ -79,6 +79,8 @@ export interface Settings {
   typoTolerance: boolean
   /** After a miss in Write, copy the correct answer once before moving on. */
   retypeOnMiss: boolean
+  /** Set once the user dismisses the "install this app" banner. */
+  installBannerDismissed: boolean
   reducedMotion: boolean
 }
 
@@ -91,5 +93,6 @@ export const DEFAULT_SETTINGS: Settings = {
   starredOnlyDefault: false,
   typoTolerance: true,
   retypeOnMiss: true,
+  installBannerDismissed: false,
   reducedMotion: false,
 }

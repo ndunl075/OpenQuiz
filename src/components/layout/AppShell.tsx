@@ -2,6 +2,9 @@ import { useOutlet, useLocation } from 'react-router-dom'
 import { useLayoutEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { TopNav } from './TopNav'
+import { InstallBanner } from '../InstallBanner'
+import { useAsync } from '../../hooks/useAsync'
+import { listSets } from '../../store/sets'
 
 /** Chromeless routes: study modes take over the whole viewport, and the
  *  landing page carries its own header. */
@@ -35,9 +38,12 @@ export function AppShell() {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
+  const { value: sets } = useAsync(listSets, [location.pathname])
+
   return (
     <div className="flex min-h-full flex-col">
       {!fullBleed && <TopNav />}
+      {!fullBleed && <InstallBanner hasSets={(sets?.length ?? 0) > 0} />}
       <AnimatePresence mode="wait" initial={false}>
         <motion.main
           key={location.pathname}
