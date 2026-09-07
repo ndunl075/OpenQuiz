@@ -31,7 +31,12 @@ async function waitForServer(timeoutMs = 30000) {
 let code = 1
 try {
   await waitForServer()
-  const suites = { mobile: 'e2e/mobile.mjs', flows: 'e2e/flows.mjs' }
+  const suites = {
+    mobile: 'e2e/mobile.mjs',
+    flows: 'e2e/flows.mjs',
+    persistence: 'e2e/persistence.mjs',
+    modes: 'e2e/modes.mjs',
+  }
   const script = suites[process.argv[2]] ?? 'e2e/journey.mjs'
   const journey = spawn('node', [script], {
     stdio: 'inherit',
