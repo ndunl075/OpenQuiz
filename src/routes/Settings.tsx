@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Page } from '../components/layout/AppShell'
 import { Button } from '../components/ui/Button'
 import { Modal } from '../components/ui/Modal'
@@ -7,6 +7,14 @@ import { useSettings } from '../store/useSettings'
 import { exportLibrary, importBackup, wipeLibrary } from '../lib/backup'
 import { download } from '../lib/exportSet'
 import { pluralize } from '../lib/format'
+import {
+  formatBytes,
+  getStorageStatus,
+  isInstalled,
+  isIosBrowser,
+  requestPersistentStorage,
+  type StorageStatus,
+} from '../lib/storage'
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -26,6 +34,17 @@ export default function SettingsPage() {
   const fileRef = useRef<HTMLInputElement>(null)
   const [message, setMessage] = useState<{ tone: 'ok' | 'bad'; text: string } | null>(null)
   const [confirmWipe, setConfirmWipe] = useState(false)
+  const [storage, setStorage] = useState<StorageStatus | null>(null)
+
+  useEffect(() => {
+    let alive = true
+    void getStorageStatus().then((status) => {
+      if (alive) setStorage(status)
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
 
   const onFile = async (file: File | undefined) => {
     if (!file) return
@@ -101,6 +120,66 @@ export default function SettingsPage() {
             checked={settings.shuffleDefault}
             onChange={(shuffleDefault) => void update({ shuffleDefault })}
           />
+        </div>
+      </Section>
+
+      <Section title="Where your sets live">
+        <div className="divide-y divide-[var(--oq-line)]">
+          <div className="py-4">
+            <p className="text-sm font-semibold">
+              Saved in this browser, on this device
+            </p>
+            <p className="mt-1 text-xs text-[var(--oq-text-soft)]">
+              Every tab and window of this browser sees the same sets. A
+              different browser on this device, and any other device, each keep
+              their own separate copy — moving between them means exporting a
+              backup below.
+            </p>
+          </div>
+
+          {storage && storage.durability !== 'unsupported' && (
+            <div className="flex flex-wrap items-center justify-between gap-4 py-4">
+              <span className="min-w-0">
+                <span className="block text-sm font-semibold">
+                  {storage.durability === 'persistent'
+                    ? 'Protected from automatic clean-up'
+                    : 'Not yet protected from automatic clean-up'}
+                </span>
+                <span className="block text-xs text-[var(--oq-text-faint)]">
+                  {storage.durability === 'persistent'
+                    ? 'Your browser has agreed to keep this data even when storage runs low.'
+                    : 'Your browser may clear this data if the device runs out of space.'}
+                  {storage.usage !== undefined && ` Using ${formatBytes(storage.usage)}.`}
+                </span>
+              </span>
+              {storage.durability === 'best-effort' && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={async () => {
+                    await requestPersistentStorage()
+                    setStorage(await getStorageStatus())
+                  }}
+                >
+                  Ask again
+                </Button>
+              )}
+            </div>
+          )}
+
+          {isIosBrowser() && !isInstalled() && (
+            <div className="py-4">
+              <p className="text-sm font-semibold text-[#8a6300]">
+                On iPhone and iPad, add OpenQuiz to your Home Screen
+              </p>
+              <p className="mt-1 text-xs text-[var(--oq-text-soft)]">
+                Safari deletes a website's saved data after seven days without
+                visiting it. Adding OpenQuiz to your Home Screen — Share, then
+                Add to Home Screen — exempts it from that, and it opens like an
+                app. Export a backup either way.
+              </p>
+            </div>
+          )}
         </div>
       </Section>
 

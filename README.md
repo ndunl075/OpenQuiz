@@ -50,22 +50,42 @@ You make a set once, then practise it in whichever mode suits you.
 
 ## About your data — please read this bit
 
-Everything you make is saved in your web browser on the device you're using. That's
-good for privacy: nobody else can see it, and we couldn't look at it if we wanted to.
+Everything you make is saved by your browser, on the device you are using. That
+is good for privacy: nobody else can see it, and we could not look at it if we
+wanted to. It also means the copy on each browser is separate.
 
-This holds however you reach OpenQuiz. Opening it at a web address changes
-nothing: the site only sends the app to your browser, and your browser does the
-saving. `npm run test:persistence` checks exactly that — it creates a set, watches
-every request the page makes, and fails if any of them carries what you typed or
-goes anywhere off-origin at all. It then restarts the browser to confirm the set
-is still there, and checks that a different browser profile cannot see it.
+### Will my sets still be there?
 
-But it also means **nothing is backed up automatically**. If you clear your
-browser history and site data, or uninstall the browser, your sets go with it.
+| Where you open it | Sets still there? |
+|---|---|
+| A new tab or window, same browser | **Yes** |
+| After quitting and reopening the browser | **Yes** |
+| After restarting the computer or phone | **Yes** |
+| With no internet connection | **Yes** — it works offline |
+| A different browser on the same device (Chrome vs Safari) | **No** — each browser keeps its own copy |
+| A private / incognito window | **No** — it is discarded when you close it |
+| A different device | **No** |
 
-So: go to **Settings → Back up everything** now and then. It saves one file you
-can keep safe, email to yourself, or load onto another computer. You can also
-export a single set on its own.
+So "same device" means *same browser* on that device. Chrome and Safari on one
+laptop are two separate libraries, and on iPhone or iPad, Chrome and Safari are
+separate too, because each app keeps its own storage.
+
+To move sets between browsers or devices, use **Settings → Back up everything**
+and import the file on the other one.
+
+### Two things that can delete your sets
+
+- **Clearing browsing data.** Clearing history and site data, or uninstalling
+  the browser, removes your sets with it. There is no cloud copy to restore.
+- **iPhone and iPad specifically.** Safari deletes a website's saved data after
+  **seven days** without opening that site. Adding OpenQuiz to your Home Screen
+  (Share, then Add to Home Screen) exempts it from this and makes it open like
+  an app. Settings shows this reminder on iOS.
+
+OpenQuiz asks your browser to protect its data from routine clean-up as soon as
+you make your first set, and Settings shows whether the browser agreed. That
+does not cover the two cases above, so **export a backup now and then** if the
+sets matter to you.
 
 ## Getting it running
 

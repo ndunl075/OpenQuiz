@@ -1,5 +1,6 @@
 import { db } from '../lib/db'
 import { newId } from '../lib/id'
+import { requestPersistentStorage } from '../lib/storage'
 import type { Folder, SetId, StudySet, Term, TermId } from '../lib/types'
 
 export function blankTerm(): Term {
@@ -37,6 +38,10 @@ export async function saveSet(set: StudySet): Promise<StudySet> {
     updatedAt: Date.now(),
   }
   await db.sets.put(clean)
+  // There is now data worth keeping, so ask the browser not to evict it. Asked
+  // here rather than on load so a first-time visitor is never prompted for
+  // storage they have not used yet. Declining is fine; the set is still saved.
+  void requestPersistentStorage()
   return clean
 }
 

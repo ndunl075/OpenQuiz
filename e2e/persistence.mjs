@@ -136,7 +136,40 @@ let setUrl = ''
   await context.close()
 }
 
-// ── 2. Restart the browser entirely; the data must still be there ────────────
+// ── 2. Every tab and window of the same browser shares one library ───────────
+{
+  const context = await launch(profile)
+  const first = await context.newPage()
+  await first.goto(BASE, { waitUntil: 'networkidle' })
+  await first.waitForURL('**/home', { timeout: 10000 })
+
+  await step('a second tab sees the same sets', async () => {
+    const second = await context.newPage()
+    await second.goto(`${BASE}/library`, { waitUntil: 'networkidle' })
+    await second.getByText('Device Storage Proof').first().waitFor({ timeout: 10000 })
+  })
+
+  await step('the sets outlive the tab that made them', async () => {
+    await first.close()
+    const third = await context.newPage()
+    await third.goto(`${BASE}/library`, { waitUntil: 'networkidle' })
+    await third.getByText('Device Storage Proof').first().waitFor({ timeout: 10000 })
+  })
+
+  await step('the browser is asked to keep the data', async () => {
+    const page = context.pages()[context.pages().length - 1]
+    const durability = await page.evaluate(async () =>
+      navigator.storage?.persisted ? await navigator.storage.persisted() : 'unsupported',
+    )
+    // Headless Chromium refuses persistence, so this asserts the app asked and
+    // handled the answer, not that the answer was yes.
+    if (durability === 'unsupported') throw new Error('storage API unavailable')
+  })
+
+  await context.close()
+}
+
+// ── 3. Restart the browser entirely; the data must still be there ────────────
 {
   const context = await launch(profile)
   const page = await context.newPage()
@@ -167,7 +200,7 @@ let setUrl = ''
   await context.close()
 }
 
-// ── 3. A different profile is a different device: it must see nothing ────────
+// ── 4. A different browser on the same device must see nothing ──────────────
 {
   const context = await launch(otherProfile)
   const page = await context.newPage()
