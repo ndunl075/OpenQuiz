@@ -94,17 +94,21 @@ async function checkTapTargets(page, profile, where) {
         const r = el.getBoundingClientRect()
         // 44px is the platform guidance; flag anything that misses it in
         // either direction once the control is not an inline run of text.
+        // Sub-pixel layout at a 3x device ratio reports a 44px box as 43.99,
+        // so allow half a pixel of slack rather than chasing rounding.
+        const MIN = 43.5
         const isInlineText = (el.textContent ?? '').trim().length > 0 && el.tagName === 'A'
         if (isInlineText) return false
-        return r.width > 0 && r.height > 0 && (r.height < 44 || r.width < 44)
+        return r.width > 0 && r.height > 0 && (r.height < MIN || r.width < MIN)
       })
       .map((el) => {
         const r = el.getBoundingClientRect()
-        return `${el.tagName.toLowerCase()}[${el.getAttribute('aria-label') ?? (el.textContent ?? '').trim().slice(0, 20)}] ${Math.round(r.width)}x${Math.round(r.height)}`
+        const size = (n) => n.toFixed(1)
+        return `${el.tagName.toLowerCase()}[${el.getAttribute('aria-label') ?? (el.textContent ?? '').trim().slice(0, 20)}] ${size(r.width)}x${size(r.height)}`
       })
       .slice(0, 4),
   )
-  if (tiny.length > 0) note(profile, `${where} has controls under 32px: ${tiny.join(', ')}`)
+  if (tiny.length > 0) note(profile, `${where} has controls under 44px: ${tiny.join(', ')}`)
 }
 
 /**
