@@ -125,7 +125,8 @@ export function TopNav() {
             end={item.end}
             className={({ isActive }) =>
               clsx(
-                'flex-1 py-2.5 text-center text-[13px] font-semibold transition-colors',
+                'touch-target flex flex-1 items-center justify-center py-2.5 text-center text-[13px]',
+                'font-semibold transition-colors active:bg-[var(--oq-surface-2)]',
                 isActive
                   ? 'text-indigo-oq'
                   : 'text-[var(--oq-text-soft)] hover:text-[var(--oq-text)]',

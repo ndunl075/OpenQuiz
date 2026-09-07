@@ -99,7 +99,10 @@ export function WrittenAnswer({
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {onContinue && (
               <Button onClick={onContinue}>
-                Continue <span className="ml-1 opacity-60">↵</span>
+                Continue{' '}
+                <span aria-hidden className="ml-1 opacity-60">
+                  ↵
+                </span>
               </Button>
             )}
             {result.grade !== 'correct' && onOverride && (

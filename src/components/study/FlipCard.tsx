@@ -52,7 +52,7 @@ export function FlipCard({
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
         whileHover={{ scale: 1.004 }}
-        className="preserve-3d relative h-[clamp(320px,52dvh,460px)] w-full cursor-pointer outline-none"
+        className="preserve-3d relative h-[clamp(320px,52svh,460px)] w-full cursor-pointer outline-none"
       >
         <div className={FACE}>
           <span className="absolute left-4 top-4 flex gap-1">{topLeft}</span>

@@ -268,7 +268,10 @@ export default function Learn() {
                           className="mt-6 flex justify-end"
                         >
                           <Button onClick={() => void advance()}>
-                            Continue <span className="ml-1 opacity-60">↵</span>
+                            Continue{' '}
+                <span aria-hidden className="ml-1 opacity-60">
+                  ↵
+                </span>
                           </Button>
                         </motion.div>
                       )}

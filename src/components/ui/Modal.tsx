@@ -32,7 +32,7 @@ export function Modal({ open, onClose, title, children, footer, width = 'max-w-l
   return createPortal(
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pt-safe pb-safe">
+        <div className="oq-inset-pad fixed inset-x-0 top-0 z-50 flex h-[100dvh] items-center justify-center">
           <motion.div
             className="absolute inset-0 bg-black/45"
             initial={{ opacity: 0 }}
@@ -46,12 +46,14 @@ export function Modal({ open, onClose, title, children, footer, width = 'max-w-l
             aria-modal="true"
             aria-label={title}
             /*
-             * Cap the dialog to the viewport and scroll the body, not the
-             * page: a tall dialog (the import preview, say) used to run past
-             * the bottom of a phone screen and take its footer buttons with
-             * it, leaving no way to confirm.
+             * Cap the dialog to the overlay's content box and scroll the body,
+             * not the page: a tall dialog (the import preview, say) used to run
+             * past the bottom of a phone screen and take its footer buttons
+             * with it, leaving no way to confirm. `max-h-full` inherits the
+             * overlay's safe-area padding, so the cap accounts for the notch
+             * and the home indicator without repeating the arithmetic.
              */
-            className={`relative flex max-h-[calc(100dvh-2rem)] w-full ${width} flex-col oq-card oq-shadow-lg overflow-hidden`}
+            className={`relative flex max-h-full w-full ${width} flex-col oq-card oq-shadow-lg overflow-hidden`}
             initial={{ opacity: 0, y: 16, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}

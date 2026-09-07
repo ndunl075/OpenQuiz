@@ -278,7 +278,7 @@ export default function Gravity() {
                   flash === 'miss' && 'border-coral bg-coral-soft',
                   !flash && 'border-[var(--oq-line)] bg-[var(--oq-surface)]',
                 )}
-                style={{ minHeight: 'clamp(300px, 46dvh, 460px)' }}
+                style={{ minHeight: 'clamp(300px, 46svh, 460px)' }}
               >
                 {/* Ground line */}
                 <div className="absolute inset-x-0 bottom-10 border-t-2 border-dashed border-[var(--oq-line)]" />
@@ -321,7 +321,7 @@ export default function Gravity() {
                 )}
               </div>
 
-              <div className="mt-4 mb-safe">
+              <div className="mt-4">
                 <label htmlFor="gravity-input" className="sr-only">
                   Type the answer
                 </label>

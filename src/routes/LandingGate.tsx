@@ -11,7 +11,7 @@ import { listSets } from '../store/sets'
 export default function LandingGate() {
   const { value: sets, loading } = useAsync(listSets, [])
 
-  if (loading) return <div className="min-h-dvh bg-[var(--oq-bg)]" />
+  if (loading) return <div className="min-h-screen min-h-dvh bg-[var(--oq-bg)]" />
   if (sets && sets.length > 0) return <Navigate to="/home" replace />
   return <Landing />
 }

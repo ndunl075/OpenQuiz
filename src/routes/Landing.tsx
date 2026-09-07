@@ -12,8 +12,8 @@ const EASE = [0.2, 0.8, 0.2, 1] as const
 /** Indigo reads at ~3.6:1 on the navy canvas; plum is the same hue with contrast. */
 const ACCENT_TEXT = 'text-indigo-oq [[data-theme=dark]_&]:text-plum'
 
-/** Shared page gutter. */
-const WRAP = 'mx-auto w-full max-w-[1100px] px-4 sm:px-6'
+/** Shared page gutter. oq-gutter widens to clear the notch in landscape. */
+const WRAP = 'oq-gutter mx-auto w-full max-w-[1100px]'
 
 /* ------------------------------------------------------------------ *
  * Motion helpers
@@ -105,7 +105,7 @@ function Header() {
       (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false))
 
   return (
-    <header className={clsx(WRAP, 'flex h-16 items-center justify-between')}>
+    <header className={clsx(WRAP, 'pt-safe flex h-16 items-center justify-between')}>
       <Wordmark />
       <nav aria-label="Landing" className="flex items-center gap-1">
         <a

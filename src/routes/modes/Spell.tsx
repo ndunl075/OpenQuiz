@@ -237,7 +237,10 @@ export default function Spell() {
                     <p className="text-sm font-bold text-[#a63a28]">The correct spelling is</p>
                     <p className="mt-1 text-lg font-semibold">{answer}</p>
                     <Button className="mt-4" onClick={advance}>
-                      Continue <span className="ml-1 opacity-60">↵</span>
+                      Continue{' '}
+                <span aria-hidden className="ml-1 opacity-60">
+                  ↵
+                </span>
                     </Button>
                   </motion.div>
                 )}
